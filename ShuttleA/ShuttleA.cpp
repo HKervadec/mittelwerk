@@ -18,6 +18,7 @@
 #include <math.h>
 #include <stdio.h>
 
+
 #define LOADBMP(id) (LoadBitmap (g_Param.hDLL, MAKEINTRESOURCE (id)))
 
 // ==============================================================
@@ -84,6 +85,9 @@ ShuttleA::~ShuttleA ()
 {
 	ReleaseSurfaces();
 }
+
+
+
 
 // --------------------------------------------------------------
 // Define animation sequences for moving parts
@@ -1236,6 +1240,8 @@ void ShuttleA::clbkPostCreation ()
 // --------------------------------------------------------------
 void ShuttleA::clbkPostStep (double simt, double simdt, double mjd)
 {
+	postStep(simt, simdt, mjd);
+
 	// animate auxiliary engine pods
 	bool redraw = false;
 	for (int i = 0; i < 2; i++) {

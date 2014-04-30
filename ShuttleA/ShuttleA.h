@@ -8,6 +8,8 @@
 // Class interface for Shuttle-A vessel class module
 // ==============================================================
 
+
+
 #ifndef __SHUTTLEA_H
 #define __SHUTTLEA_H
 
@@ -136,7 +138,16 @@ public:
 	bool clbkVCRedrawEvent (int id, int event, SURFHANDLE surf);
 	bool clbkVCMouseEvent (int id, int event, VECTOR3 &p);
 
+
 private:
+	// OTTO
+	int m_state = 1;
+	void postStep(double simt, double simdt, double mjd);
+	void state0(double simt, double simdt, double mjd);
+	void state1(double simt, double simdt, double mjd);
+
+
+
 	void DefineAnimations ();
 	bool ToggleGrapple (int grapple);
 	double payload_mass;
