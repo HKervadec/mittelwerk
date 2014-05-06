@@ -1,3 +1,5 @@
+ShuttleA
+
 main0 : th_main[0]
 main1 : th_main[1]
 hover0 : th_hover[0]
@@ -34,7 +36,9 @@ VOID anotherUselessFonc(){
 /* Commentaire de test */
 
 
-STATE_0{
+STATE_TOTO{
+	START
+	
 	ACTION{
 		INT test;
 		IF(t > 5){

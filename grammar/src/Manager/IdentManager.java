@@ -9,6 +9,7 @@ public class IdentManager{
 	private HashMap<String, Ident> global;
 	
 	private String tmpName;
+	
 
 
 	public IdentManager(){
@@ -40,7 +41,7 @@ public class IdentManager{
 	
 	
 	public void clearLocal(){
-		System.out.println(this);
+		// System.out.println(this);
 	
 		this.local = new HashMap<String, Ident>();
 	}

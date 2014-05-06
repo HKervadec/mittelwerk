@@ -11,7 +11,7 @@ public class FunctionManager{
 	private IdentFunction current_fct;
 	
 	public FunctionManager(){
-	
+		
 	}
 	
 	
@@ -29,6 +29,10 @@ public class FunctionManager{
 	
 	public void addParamType(Type t){
 		this.current_fct.addParamType(t);
+	}
+	
+	public void addParamName(String n){
+		this.current_fct.addParamName(n);
 	}
 	
 	public void commitFunction(){

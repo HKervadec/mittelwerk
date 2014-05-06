@@ -4,12 +4,16 @@ package Core;
 import Ident.*;
 import Utils.*;
 import Manager.*;
+import Emitter.*;
 
 
 public class Mittelwerk {
 	public static IdentManager i_m = new IdentManager();
 	public static FunctionManager f_m = new FunctionManager();
 	public static TypeMem t_m = new TypeMem();
+	public static StateManager s_m = new StateManager();
+	public static Emitter e = new Emitter();
+	
 	
     public static void main(String args[]) { 
         Mittelwerk parser;
@@ -46,6 +50,7 @@ public class Mittelwerk {
     }
     
     public static void the_end(){
+		System.out.println(e.getVesselName());
 		System.out.println(i_m);
     }
 }
@@ -58,7 +63,7 @@ PARSER_END(Mittelwerk)
 /**************************************/
 
 TOKEN_MGR_DECLS :
-{public static String p_ident, p_string, p_tab;
+{public static String p_ident, p_string, p_tab, p_state;
  public static int p_int;
  public static double p_double;}
 
@@ -93,6 +98,7 @@ TOKEN :
 	| < GOTOGOTO: "GOTOGOTO" >
 	| < ACTION: "ACTION" >
 	| < FINAL: "FINAL" >
+	| < START: "START" >
 	
 	| < MIN: "MIN" >
 	| < MAX: "MAX" >
@@ -124,6 +130,7 @@ TOKEN  :
 		{ p_double = Double.parseDouble(image.toString());}
 	| < #state_c: ["A"-"Z"] | "_" | <digit> >
 	| < state: (<state_c>)+ >
+		{p_state = image.toString();}
     | < #letter: ["A"-"Z","a"-"z"] >
 	| < #super_letter : <letter> | "_" >
     | < ident : <super_letter> (<super_letter> | <digit>)* >
@@ -139,11 +146,17 @@ TOKEN  :
 /**************************************/
 
 void v2(): {}{
+	vesselName()
 	(declThrusters())*
 	(declFunctions())*
 	(declStates())+
 	
 	<EOF>
+}
+
+void vesselName(): {}{
+	<ident>
+		{e.setVesselName(MittelwerkTokenManager.p_ident);}
 }
 
 void declThrusters(): {}{
@@ -179,6 +192,7 @@ void arg(): {}{
 	type()
 		{f_m.addParamType(t_m.pop());}
 	<ident>
+		{f_m.addParamName(MittelwerkTokenManager.p_ident);}
 }
 
 void set_instruction(): {}{
@@ -190,7 +204,6 @@ void instruction(): {}{
 	| LOOKAHEAD(2) affect() ";"
 	| fct_call() ";"
 	| if_()
-	| gotogoto() ";"
 }
 
 void decl_local_var(): {}{
@@ -252,6 +265,58 @@ void type(): {}{
 	| <DOUBLE>
 		{t_m.push(Type.DOUBLE);}
 }
+
+
+void declStates(): {}{
+		{i_m.clearLocal();}
+	<state> 
+		{s_m.addState(MittelwerkTokenManager.p_state);} 
+	"{"
+		[ <START> ]
+		<ACTION> "{"
+			set_instruction()
+		"}"
+		jmp()
+	"}"
+}
+
+void jmp(): {}{
+	<FINAL>
+	| <GOTO> "{"
+		(if_goto())+
+		"}"
+}
+
+
+void if_(): {}{
+	<IF> "(" valeur() ")" "{"
+		set_instruction()
+	"}"
+	( <ELSE> ("{" set_instruction() "}"
+		| instruction()))?
+}
+
+void if_goto(): {}{
+	<IF> "(" valeur() ")" "{"
+		set_instruction()
+		gotogoto() ";"
+	"}"
+	( <ELSE> ("{" set_instruction() gotogoto() ";" "}"
+		| gotogoto() ";"))?
+}
+
+void gotogoto(): {}{
+	<GOTOGOTO> <state>
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -333,35 +398,7 @@ void opNeg() : {}
 
 
 
-void declStates(): {}{
-		{i_m.clearLocal();}
-	<state> "{"
-		<ACTION> "{"
-			set_instruction()
-		"}"
-		jmp()
-	"}"
-}
 
-void jmp(): {}{
-	<FINAL>
-	| <GOTO> "{"
-		(if_())+
-		"}"
-}
-
-
-void if_(): {}{
-	<IF> "(" valeur() ")" "{"
-		set_instruction()
-	"}"
-	( <ELSE> ("{" set_instruction() ")"
-		| instruction()))?
-}
-
-void gotogoto(): {}{
-	<GOTOGOTO> <state>
-}
 
 
 
