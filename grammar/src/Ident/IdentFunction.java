@@ -1,4 +1,7 @@
+package Ident;
+
 import java.util.ArrayList;
+import Utils.Type;
 
 public class IdentFunction extends Ident{
 	private Type return_type;

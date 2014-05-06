@@ -4,8 +4,9 @@
 	<property name="class.dir" location="class" />
 	<property name="javacc.dir" location="C:\Program Files (x86)\Java\javacc-5.0" />
 	
-	<target name="grammar">
-		<javacc target="${src.dir}/Mittelwerk.jj" javacchome="${javacc.dir}" outputdirectory="${src.dir}">
+	<target name="grammar" depends="mkdir">
+		<javacc target="${src.dir}/Mittelwerk.jj" javacchome="${javacc.dir}" 
+			outputdirectory="${src.dir}/Core">
 		</javacc>
 	</target>
 	
@@ -20,16 +21,11 @@
 	
 	<target name="clean">
 		<delete dir="${class.dir}" />
-		<delete file="${src.dir}/TokenMgrError.java" />
-		<delete file="${src.dir}/ParseException.java" />
-		<delete file="${src.dir}/Token.java" />
-		<delete file="${src.dir}/SimpleCharStream.java" />
-		<delete file="${src.dir}/Mittelwerk.java" />
-		<delete file="${src.dir}/MittelwerkConstants.java" />
-		<delete file="${src.dir}/MittelwerkTokenManager.java" />
+		<delete dir="${class.dir}/Core" />
 	</target>
 	
 	<target name="mkdir">
 		<mkdir dir="${class.dir}" />
+		<mkdir dir="${src.dir}/Core" />
 	</target>
 </project>

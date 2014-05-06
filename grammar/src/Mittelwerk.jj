@@ -1,4 +1,9 @@
 PARSER_BEGIN(Mittelwerk)
+package Core;
+
+import Ident.*;
+import Utils.*;
+import Manager.*;
 
 
 public class Mittelwerk {

@@ -1,3 +1,9 @@
+package Manager;
+
+import Core.Mittelwerk;
+import Utils.Type;
+import Ident.*;
+
 public class FunctionManager{
 	private Type current_type;
 	private String current_name;

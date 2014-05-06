@@ -1,4 +1,8 @@
+package Manager;
+
 import java.util.HashMap;
+import Ident.*;
+import Utils.Type;
 
 public class IdentManager{
 	private HashMap<String, Ident> local;

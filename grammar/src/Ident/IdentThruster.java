@@ -1,3 +1,5 @@
+package Ident;
+
 public class IdentThruster extends Ident{
 	private String s_value;
 	

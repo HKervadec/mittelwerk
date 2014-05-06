@@ -3,13 +3,7 @@
 
 # Grammar
 grammar/class
-grammar/src/TokenMgrError.java
-grammar/src/ParseException.java
-grammar/src/Token.java
-grammar/src/SimpleCharStream.java
-grammar/src/Mittelwerk.java
-grammar/src/MittelwerkConstants.java
-grammar/src/MittelwerkTokenManager.java
+grammar/src/Core
 
 # User-specific files
 *.suo
