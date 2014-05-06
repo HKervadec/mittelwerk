@@ -39,6 +39,7 @@ public class Mittelwerk {
     }
     
     public static void the_end(){
+		System.out.println(i_m);
     }
 }
 
@@ -140,8 +141,10 @@ void v2(): {}{
 
 void declThrusters(): {}{
 	<ident>
+		{i_m.memorizeName(MittelwerkTokenManager.p_ident);}
 	":"
 	<tab>
+		{i_m.saveGlobal(Type.THRUSTER, MittelwerkTokenManager.p_tab);}
 }
 
 void declFunctions(): {}{
