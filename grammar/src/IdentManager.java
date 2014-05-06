@@ -16,7 +16,7 @@ public class IdentManager{
 	/************************************************************/
 	/*						Manage hashmap						*/
 	/************************************************************/
-	private boolean add(HashMap dest, String name, Ident id){
+	private boolean add(HashMap<String, Ident> dest, String name, Ident id){
 		if(!dest.containsKey(name)){
 			dest.put(name, id);
 			
@@ -32,6 +32,19 @@ public class IdentManager{
 	
 	public boolean addGlobal(String name, Ident id){
 		return this.add(this.global, name, id);
+	}
+	
+	
+	private Ident getIdent(HashMap<String, Ident> source, String name){
+		return source.get(name);
+	}
+	
+	public Ident getLocalIdent(String name){
+		return this.getIdent(this.local, name);
+	}
+	
+	public Ident getGLobalIdent(String name){
+		return this.getIdent(this.global, name);
 	}
 	
 	

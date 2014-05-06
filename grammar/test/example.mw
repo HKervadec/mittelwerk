@@ -24,6 +24,12 @@ VOID maintainAltitude(DOUBLE goal){
 	SET_LVL(hover1, tl1);
 }
 
+DOUBLE uselessFonc(INT a, DOUBLE b, BOOL c){
+}
+
+VOID anotherUselessFonc(){
+}
+
 
 /* Commentaire de test */
 

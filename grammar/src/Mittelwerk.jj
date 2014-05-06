@@ -3,6 +3,8 @@ PARSER_BEGIN(Mittelwerk)
 
 public class Mittelwerk {
 	public static IdentManager i_m = new IdentManager();
+	public static FunctionManager f_m = new FunctionManager();
+	public static TypeMem t_m = new TypeMem();
 	
     public static void main(String args[]) { 
         Mittelwerk parser;
@@ -149,21 +151,27 @@ void declThrusters(): {}{
 
 void declFunctions(): {}{
 	typeFunction()
+		{f_m.setCurrentType(t_m.pop());}
 	<ident>
+		{f_m.setCurrentName(MittelwerkTokenManager.p_ident);
+		 f_m.createFunction();}
 	"("
-	args()
+	[args()]
 	")"
+		{f_m.commitFunction();}
 	"{"
 	set_instruction()
 	"}"
 }
 
 void args(): {}{
-	(arg())*
+	arg()
+	("," arg())*
 }
 
 void arg(): {}{
 	type()
+		{f_m.addParamType(t_m.pop());}
 	<ident>
 }
 
@@ -219,13 +227,17 @@ void min(): {}{
 
 void typeFunction(): {}{
 	<VOID> 
+		{t_m.push(Type.VOID);}
 	| type()
 }
 
 void type(): {}{
 	<BOOL>
+		{t_m.push(Type.BOOL);}
 	| <INT>
+		{t_m.push(Type.INT);}
 	| <DOUBLE>
+		{t_m.push(Type.DOUBLE);}
 }
 
 
