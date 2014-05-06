@@ -36,6 +36,7 @@ VOID anotherUselessFonc(){
 
 STATE_0{
 	ACTION{
+		INT test;
 		IF(t > 5){
 			SET_LVL(hover0, 1);
 			SET_LVL(hover1, 1);

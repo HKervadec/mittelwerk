@@ -39,6 +39,13 @@ public class IdentManager{
 	}
 	
 	
+	public void clearLocal(){
+		System.out.println(this);
+	
+		this.local = new HashMap<String, Ident>();
+	}
+	
+	
 	private Ident getIdent(HashMap<String, Ident> source, String name){
 		return source.get(name);
 	}
@@ -65,6 +72,12 @@ public class IdentManager{
 		this.addLocal(this.tmpName, id);
 	}
 	
+	public void saveLocalVar(Type t){
+		Ident id = this.buildIdVar(t);
+		
+		this.addLocal(this.tmpName, id);
+	}
+	
 	public void saveGlobal(Type t, String value){
 		Ident id = this.buildId(t, value);
 		
@@ -78,6 +91,10 @@ public class IdentManager{
 		default:
 			return null;
 		}
+	}
+	
+	private Ident buildIdVar(Type t){
+		return new IdentVar(this.tmpName, t);
 	}
 	
 	

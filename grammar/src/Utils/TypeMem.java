@@ -16,4 +16,12 @@ public class TypeMem{
 	public Type pop(){
 		return this.mem.pop();
 	}
+	
+	public Type peek(){
+		return this.mem.peek();
+	}
+	
+	public void drop(){
+		this.mem.pop();
+	}
 }

@@ -155,6 +155,7 @@ void declThrusters(): {}{
 }
 
 void declFunctions(): {}{
+		{i_m.clearLocal();}
 	typeFunction()
 		{f_m.setCurrentType(t_m.pop());}
 	<ident>
@@ -193,7 +194,14 @@ void instruction(): {}{
 }
 
 void decl_local_var(): {}{
-	type() <ident> ("," <ident>)*
+	type() 
+	<ident> 
+		{i_m.memorizeName(MittelwerkTokenManager.p_ident);
+			i_m.saveLocalVar(t_m.peek());}
+	("," <ident>
+			{i_m.memorizeName(MittelwerkTokenManager.p_ident);
+			i_m.saveLocalVar(t_m.peek());} )*
+		{t_m.drop();}
 }
 
 void affect(): {}{
@@ -326,6 +334,7 @@ void opNeg() : {}
 
 
 void declStates(): {}{
+		{i_m.clearLocal();}
 	<state> "{"
 		<ACTION> "{"
 			set_instruction()
