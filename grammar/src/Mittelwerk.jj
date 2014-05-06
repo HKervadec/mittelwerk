@@ -1,0 +1,338 @@
+PARSER_BEGIN(Mittelwerk)
+
+
+public class Mittelwerk {
+	public static IdentManager i_m = new IdentManager();
+	
+    public static void main(String args[]) { 
+        Mittelwerk parser;
+        java.io.InputStream input;
+
+        if (args.length >= 1) {
+            try {
+                input = new java.io.FileInputStream(args[0]);
+            } catch (java.io.FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+		}else {
+            System.out.println("java Mittelwerk <input.mw>");
+            return;
+        }
+		
+        try {
+            parser = new Mittelwerk(input);
+            
+            begin(args[0]);
+            
+            parser.v2();
+            System.out.println("analyse syntaxique reussie!");
+            
+            the_end();
+        } catch (ParseException e) {
+            String msg = e.getMessage();
+            System.out.println("Syntax error:\n" + msg);
+        } 
+    } 
+    
+    public static void begin(String fileName){
+    }
+    
+    public static void the_end(){
+    }
+}
+
+PARSER_END(Mittelwerk)
+
+
+/**************************************/
+/*				TOKEN				  */
+/**************************************/
+
+TOKEN_MGR_DECLS :
+{public static String p_ident, p_string, p_tab;
+ public static int p_int;
+ public static double p_double;}
+
+/*** Skip whitespace and comments ***/
+SKIP :
+{
+      " "
+    | "\t"
+    | "\n" 
+    | "\r"
+    | "/*"   : IN_COMMENT
+}
+<IN_COMMENT> MORE:
+{
+    < ~[] >
+}
+<IN_COMMENT> SKIP:
+{
+    < "*/" >  {SwitchTo(DEFAULT);} 
+}
+
+
+/* Reserved words */
+
+TOKEN :
+{
+    < BOOL: "BOOL" >
+    | < DOUBLE: "DOUBLE" >
+	| < INT: "INT" >
+	| < VOID: "VOID" >
+	| < GOTO: "GOTO" >
+	| < GOTOGOTO: "GOTOGOTO" >
+	| < ACTION: "ACTION" >
+	| < FINAL: "FINAL" >
+	
+	| < MIN: "MIN" >
+	| < MAX: "MAX" >
+	
+	| < SET_LVL: "SET_LVL" >
+	| < GET_LVL: "GET_LVL" >
+	| < GET_ALTITUDE: "GET_ALTITUDE" >
+	
+	
+	| < TRUE: "TRUE" >
+	| < FALSE: "FALSE" >
+	| < AND: "AND" >
+	| < OR: "OR" >
+	| < NOT: "NOT" >
+	
+	| <IF: "IF" >
+	| <ELSE: "ELSE" >
+}
+
+
+
+/*** number, ident ***/
+TOKEN  :
+{
+    < #digit : ["0"-"9"] >
+    | < integer : (<digit>)+ > 
+        { p_int = Integer.parseInt(image.toString());}
+	| < double_ : (<digit>)+ "." (<digit>)* >
+		{ p_double = Double.parseDouble(image.toString());}
+	| < #state_c: ["A"-"Z"] | "_" | <digit> >
+	| < state: (<state_c>)+ >
+    | < #letter: ["A"-"Z","a"-"z"] >
+	| < #super_letter : <letter> | "_" >
+    | < ident : <super_letter> (<super_letter> | <digit>)* >
+        {p_ident = image.toString();}
+	| < tab: <ident> "[" <digit> (<digit>)* "]" >
+		{p_tab = image.toString();}
+}
+
+
+
+/**************************************/
+/*				GRAMMAR				  */
+/**************************************/
+
+void v2(): {}{
+	(declThrusters())*
+	(declFunctions())*
+	(declStates())+
+	
+	<EOF>
+}
+
+void declThrusters(): {}{
+	<ident>
+	":"
+	<tab>
+}
+
+void declFunctions(): {}{
+	typeFunction()
+	<ident>
+	"("
+	args()
+	")"
+	"{"
+	set_instruction()
+	"}"
+}
+
+void args(): {}{
+	(arg())*
+}
+
+void arg(): {}{
+	type()
+	<ident>
+}
+
+void set_instruction(): {}{
+	(instruction())*
+}
+
+void instruction(): {}{
+	decl_local_var() ";"
+	| LOOKAHEAD(2) affect() ";"
+	| fct_call() ";"
+	| if_()
+	| gotogoto() ";"
+}
+
+void decl_local_var(): {}{
+	type() <ident> ("," <ident>)*
+}
+
+void affect(): {}{
+	<ident> "=" valeur()
+}
+
+void valeur(): {}{
+	LOOKAHEAD(2)
+	expression()
+	| fct_call()
+}
+
+
+void fct_call(): {}{
+	<ident> "(" valeur() ("," valeur())* ")"
+	| build_in()
+}
+
+void build_in(): {}{
+	<SET_LVL> "(" <ident> "," valeur() ")"
+	| <GET_LVL> "(" <ident> ")"
+	| <GET_ALTITUDE> "(" ")"
+	| max()
+	| min()
+}
+
+void max(): {}{
+	<MAX> "(" valeur() ( "," valeur() )+ ")"
+}
+
+void min(): {}{
+	<MIN> "(" valeur() ( "," valeur() )+ ")"
+}
+
+
+
+void typeFunction(): {}{
+	<VOID> 
+	| type()
+}
+
+void type(): {}{
+	<BOOL>
+	| <INT>
+	| <DOUBLE>
+}
+
+
+
+/*
+ * Expression .
+ */
+
+void expression() : {}
+{
+    simpleExpr() 
+    (opRel() 
+    simpleExpr() 
+    )?  
+}
+
+void simpleExpr() : {}
+{
+    terme() 
+    (opAdd() 
+    terme()	
+    )*
+} 
+
+void terme() : {}
+{
+    facteur() (opMul() facteur() )*
+}
+
+void facteur() : {}
+{  
+    primaire() 
+    | opNeg() primaire()
+}
+
+void primaire (): {}
+{
+    value()
+    | "(" expression() ")" 
+}
+
+void value () : {}
+{ 
+    <integer>
+	| <double_>
+    | <ident> 
+    | <TRUE> 
+    | <FALSE>
+}
+
+void opRel() : {}
+{
+    "=="
+    | "<>" 	   
+    | "<" 	
+    | "<=" 	
+    | ">" 	
+    | ">=" 
+} 
+
+void opAdd() : {}
+{
+    "+"	
+    |  "-"  
+    | <OR> 	
+}
+
+void opMul() : {}
+{
+    "*"
+    | "/"		
+    | <AND>
+} 
+
+void opNeg() : {}
+{ 
+    "-" 
+    | <NOT>
+}
+
+
+
+void declStates(): {}{
+	<state> "{"
+		<ACTION> "{"
+			set_instruction()
+		"}"
+		jmp()
+	"}"
+}
+
+void jmp(): {}{
+	<FINAL>
+	| <GOTO> "{"
+		(if_())+
+		"}"
+}
+
+
+void if_(): {}{
+	<IF> "(" valeur() ")" "{"
+		set_instruction()
+	"}"
+	( <ELSE> ("{" set_instruction() ")"
+		| instruction()))?
+}
+
+void gotogoto(): {}{
+	<GOTOGOTO> <state>
+}
+
+
+

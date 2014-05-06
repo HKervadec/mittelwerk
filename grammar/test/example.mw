@@ -1,0 +1,53 @@
+main0 : th_main[0]
+main1 : th_main[1]
+hover0 : th_hover[0]
+hover1 : th_hover[1]
+pod0 : th_pod[0]
+pod1 : th_pod[1]
+
+
+VOID maintainAltitude(DOUBLE goal){
+	DOUBLE tl0, tl1;
+	tl0 = GET_LVL(hover0);
+	tl1 = GET_LVL(hover1);
+	
+	DOUBLE current_altitude;
+	current_altitude = GET_ALTITUDE();
+	
+	DOUBLE diff;
+	diff = (current_altitude - goal) / goal;
+	
+	tl0 = MAX(0, MIN(0.5, tl0 - diff));
+	tl1 = tl0;
+	
+	SET_LVL(hover0, tl0);
+	SET_LVL(hover1, tl1);
+}
+
+
+/* Commentaire de test */
+
+
+STATE_0{
+	ACTION{
+		IF(t > 5){
+			SET_LVL(hover0, 1);
+			SET_LVL(hover1, 1);
+		}
+	}
+
+	
+	GOTO{
+		IF(t > 10){
+			GOTOGOTO STATE_1;
+		}
+	}
+}
+
+STATE_1{
+	ACTION{
+		maintainAltitude(500);
+	}
+	
+	FINAL
+}

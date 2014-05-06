@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project name="Mittelwerk Compiler" default="info">
+	<property name="src.dir" location="src" />
+	<property name="class.dir" location="class" />
+	<property name="javacc.dir" location="C:\Program Files (x86)\Java\javacc-5.0" />
+	
+	<target name="grammar">
+		<javacc target="${src.dir}/Mittelwerk.jj" javacchome="${javacc.dir}" outputdirectory="${src.dir}">
+		</javacc>
+	</target>
+	
+	<target name="compile" depends="mkdir">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}"></javac>
+	</target>
+	
+	<target name="info">
+		<echo>This is the Mittelwerk Compiler!</echo>
+	</target>
+
+	
+	<target name="clean">
+		<delete dir="${class.dir}" />
+		<delete file="${src.dir}/TokenMgrError.java" />
+		<delete file="${src.dir}/ParseException.java" />
+		<delete file="${src.dir}/Token.java" />
+		<delete file="${src.dir}/SimpleCharStream.java" />
+		<delete file="${src.dir}/Mittelwerk.java" />
+		<delete file="${src.dir}/MittelwerkConstants.java" />
+		<delete file="${src.dir}/MittelwerkTokenManager.java" />
+	</target>
+	
+	<target name="mkdir">
+		<mkdir dir="${class.dir}" />
+	</target>
+</project>
