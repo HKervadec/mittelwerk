@@ -1,17 +1,11 @@
 #include "ShuttleA.h"
 #include "Otto.h"
 
+typedef void(ShuttleA:: *StatePt)(double, double, double);
+
 void ShuttleA::postStep(double simt, double simdt, double mjd){
-	switch (m_state){
-	case 0:
-		state0(simt, simdt, mjd);
-		break;
-	case 1:
-		state1(simt, simdt, mjd);
-		break;
-	default:
-		break;
-	}
+	StatePt state_fct[] = { &ShuttleA::state0, &ShuttleA::state1 };
+	(this->*state_fct[m_state])(simt, simdt, mjd);
 }
 
 
