@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Ident.IdentState;
 import Core.Mittelwerk;
+import Emitter.Instruction.I_StateHeader;
 
 public class StateManager{
 	private int state_number;
@@ -17,6 +18,8 @@ public class StateManager{
 	public void addState(String n){
 		Mittelwerk.i_m.addGlobal(n, new IdentState(n, state_number++));
 		this.state_names.add(n);
+		
+		Mittelwerk.e.add(new I_StateHeader(n));
 	}
 	
 	public int getStateNumber(){

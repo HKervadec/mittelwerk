@@ -5,6 +5,7 @@ import Ident.*;
 import Utils.*;
 import Manager.*;
 import Emitter.*;
+import Emitter.Instruction.*;
 
 
 public class Mittelwerk {
@@ -187,6 +188,7 @@ void declFunctions(): {}{
 	"{"
 	set_instruction()
 	"}"
+		{e.add(new I_Simple("}\n"));}
 }
 
 void args(): {}{
@@ -284,6 +286,7 @@ void declStates(): {}{
 		"}"
 		jmp()
 	"}"
+		{e.add(new I_Simple("}\n"));}
 }
 
 void jmp(): {}{

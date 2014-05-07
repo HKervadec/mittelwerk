@@ -27,6 +27,25 @@ public class IdentFunction extends Ident{
 		this.params_n.add(n);
 	}
 	
+	
+	/************************************************************/
+	/*							Getters							*/
+	/************************************************************/
+	public Type getType(){
+		return this.return_type;
+	}
+	
+	public ArrayList<Type> getParamsType(){
+		return this.params_t;
+	}
+	
+	public ArrayList<String> getParamsName(){
+		return this.params_n;
+	}
+	
+	
+	
+	
 	public String toString(){
 		String result = this.return_type.toString();
 		

@@ -7,6 +7,10 @@ public abstract class Ident{
 		this.name = n;
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
 	public String toString(){
 		return this.name;
 	}

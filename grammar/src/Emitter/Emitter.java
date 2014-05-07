@@ -29,6 +29,12 @@ public class Emitter{
 		this.vesselName = n;
 	}
 	
+	
+	
+	public void add(Instruction i){
+		this.code.add(i);
+	}
+	
 	/************************************************************/
 	/*						Emit code							*/
 	/************************************************************/

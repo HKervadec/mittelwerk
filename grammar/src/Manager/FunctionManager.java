@@ -3,6 +3,7 @@ package Manager;
 import Core.Mittelwerk;
 import Utils.Type;
 import Ident.*;
+import Emitter.Instruction.I_FunctionHeader;
 
 public class FunctionManager{
 	private Type current_type;
@@ -37,5 +38,6 @@ public class FunctionManager{
 	
 	public void commitFunction(){
 		Mittelwerk.i_m.addGlobal(this.current_name, this.current_fct);
+		Mittelwerk.e.add(new I_FunctionHeader(this.current_fct));
 	}
 }
