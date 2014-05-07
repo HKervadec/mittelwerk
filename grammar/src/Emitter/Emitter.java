@@ -18,6 +18,8 @@ public class Emitter{
 			this.output = new PrintWriter("result/Otto.cpp", "UTF-8");
 		}catch(Exception e){}
 		
+		this.code.add(new I_Header());
+		this.code.add(new I_PostStep());
 	}
 	
 	public String getVesselName(){
@@ -32,7 +34,9 @@ public class Emitter{
 	/************************************************************/
 	
 	public void emit(){
-		this.header();
+		// this.header();
+		
+		// this.postStep();
 		
 		for(Instruction inst : this.code){
 			String line = inst.convert();
@@ -52,6 +56,7 @@ public class Emitter{
 	/************************************************************/
 	private void header(){
 		String head = "#include \"" + this.vesselName + ".h\"";
-		this.code.add(new InstructionSimple(head));
+		this.code.add(new I_Simple(head));
+		this.code.add(new I_blank(2));
 	}
 }

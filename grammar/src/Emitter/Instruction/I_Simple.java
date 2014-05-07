@@ -1,9 +1,9 @@
 package Emitter.Instruction;
 
-public class InstructionSimple extends Instruction{
+public class I_Simple extends Instruction{
 	private String inst;
 	
-	public InstructionSimple(String s){
+	public I_Simple(String s){
 		this.inst = s;
 	}
 	

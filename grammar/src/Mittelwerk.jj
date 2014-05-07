@@ -10,7 +10,8 @@ import Emitter.*;
 public class Mittelwerk {
 	public static IdentManager i_m = new IdentManager();
 	public static FunctionManager f_m = new FunctionManager();
-	public static TypeMem t_m = new TypeMem();
+	public static Mem<Type> t_m = new Mem<Type>();
+	public static Mem<String> n_m = new Mem<String>();
 	public static StateManager s_m = new StateManager();
 	public static Emitter e = new Emitter();
 	
@@ -19,19 +20,19 @@ public class Mittelwerk {
         Mittelwerk parser;
         java.io.InputStream input;
 
-        if (args.length >= 1) {
-            try {
+        if(args.length >= 1){
+            try{
                 input = new java.io.FileInputStream(args[0]);
-            } catch (java.io.FileNotFoundException e) {
+            }catch (java.io.FileNotFoundException e){
                 System.out.println(e.getMessage());
                 return;
             }
-		}else {
+		}else{
             System.out.println("java Mittelwerk <input.mw>");
             return;
         }
 		
-        try {
+        try{
             parser = new Mittelwerk(input);
             
             begin(args[0]);
@@ -40,7 +41,7 @@ public class Mittelwerk {
             System.out.println("analyse syntaxique reussie!");
             
             the_end();
-        } catch (ParseException e) {
+        }catch (ParseException e){
             String msg = e.getMessage();
             System.out.println("Syntax error:\n" + msg);
         } 
@@ -132,13 +133,16 @@ TOKEN  :
 		{ p_double = Double.parseDouble(image.toString());}
 	| < #state_c: ["A"-"Z"] | "_" | <digit> >
 	| < state: (<state_c>)+ >
-		{p_state = image.toString();}
+		{p_state = image.toString();
+		 Mittelwerk.n_m.push(image.toString());}
     | < #letter: ["A"-"Z","a"-"z"] >
 	| < #super_letter : <letter> | "_" >
     | < ident : <super_letter> (<super_letter> | <digit>)* >
-        {p_ident = image.toString();}
+        {p_ident = image.toString();
+		 Mittelwerk.n_m.push(image.toString());}
 	| < tab: <ident> "[" <digit> (<digit>)* "]" >
-		{p_tab = image.toString();}
+		{p_tab = image.toString();
+		 Mittelwerk.n_m.push(image.toString());}
 }
 
 
@@ -158,15 +162,15 @@ void v2(): {}{
 
 void vesselName(): {}{
 	<ident>
-		{e.setVesselName(MittelwerkTokenManager.p_ident);}
+		{e.setVesselName(n_m.pop());}
 }
 
 void declThrusters(): {}{
 	<ident>
-		{i_m.memorizeName(MittelwerkTokenManager.p_ident);}
+		{i_m.memorizeName(n_m.pop());}
 	":"
 	<tab>
-		{i_m.saveGlobal(Type.THRUSTER, MittelwerkTokenManager.p_tab);}
+		{i_m.saveGlobal(Type.THRUSTER, n_m.pop());}
 }
 
 void declFunctions(): {}{
@@ -174,7 +178,7 @@ void declFunctions(): {}{
 	typeFunction()
 		{f_m.setCurrentType(t_m.pop());}
 	<ident>
-		{f_m.setCurrentName(MittelwerkTokenManager.p_ident);
+		{f_m.setCurrentName(n_m.pop());
 		 f_m.createFunction();}
 	"("
 	[args()]
@@ -194,7 +198,7 @@ void arg(): {}{
 	type()
 		{f_m.addParamType(t_m.pop());}
 	<ident>
-		{f_m.addParamName(MittelwerkTokenManager.p_ident);}
+		{f_m.addParamName(n_m.pop());}
 }
 
 void set_instruction(): {}{
@@ -211,10 +215,10 @@ void instruction(): {}{
 void decl_local_var(): {}{
 	type() 
 	<ident> 
-		{i_m.memorizeName(MittelwerkTokenManager.p_ident);
+		{i_m.memorizeName(n_m.pop());
 			i_m.saveLocalVar(t_m.peek());}
 	("," <ident>
-			{i_m.memorizeName(MittelwerkTokenManager.p_ident);
+			{i_m.memorizeName(n_m.pop());
 			i_m.saveLocalVar(t_m.peek());} )*
 		{t_m.drop();}
 }
@@ -272,7 +276,7 @@ void type(): {}{
 void declStates(): {}{
 		{i_m.clearLocal();}
 	<state> 
-		{s_m.addState(MittelwerkTokenManager.p_state);} 
+		{s_m.addState(n_m.pop());} 
 	"{"
 		[ <START> ]
 		<ACTION> "{"

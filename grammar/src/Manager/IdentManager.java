@@ -1,6 +1,8 @@
 package Manager;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+
 import Ident.*;
 import Utils.Type;
 
@@ -102,7 +104,17 @@ public class IdentManager{
 	
 	
 	
-	
+	/* public ArrayList<IdentState> retrieveStates(){
+		ArrayList<IdentState> result = new ArrayList<IdentState>();
+		
+		for(Ident id : this.global.values()){
+			if(id instanceof IdentState){
+				result.add((IdentState) id);
+			}
+		}
+		
+		return result;		
+	} */
 	
 	
 	
