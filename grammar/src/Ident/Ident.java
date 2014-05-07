@@ -1,6 +1,6 @@
 package Ident;
 
-public class Ident{
+public abstract class Ident{
 	private String name;
 	
 	public Ident(String n){

@@ -4,6 +4,7 @@
 # Grammar
 grammar/class
 grammar/src/Core
+grammar/result/*
 
 # User-specific files
 *.suo

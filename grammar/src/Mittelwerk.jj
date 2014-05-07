@@ -52,6 +52,8 @@ public class Mittelwerk {
     public static void the_end(){
 		System.out.println(e.getVesselName());
 		System.out.println(i_m);
+		
+		e.emit();
     }
 }
 

@@ -4,7 +4,7 @@
 	<property name="class.dir" location="class" />
 	<property name="javacc.dir" location="C:\Program Files (x86)\Java\javacc-5.0" />
 	
-	<target name="grammar" depends="mkdir">
+	<target name="grammar" depends="clean,mkdir">
 		<javacc target="${src.dir}/Mittelwerk.jj" javacchome="${javacc.dir}" 
 			outputdirectory="${src.dir}/Core">
 		</javacc>
