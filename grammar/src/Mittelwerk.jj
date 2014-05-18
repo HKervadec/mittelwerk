@@ -6,6 +6,7 @@ import Utils.*;
 import Manager.*;
 import Emitter.*;
 import Emitter.Instruction.*;
+import Error.*;
 
 
 public class Mittelwerk {
@@ -14,6 +15,9 @@ public class Mittelwerk {
 	public static FunctionManager f_m = new FunctionManager();
 	public static StateManager s_m = new StateManager();
 	public static ExpressionManager e_m = new ExpressionManager();
+	public static LineManager l_m = new LineManager();
+	
+	public static ErrorManager err_m = new ErrorManager();
 	
 	public static Mem<Type> t_m = new Mem<Type>();
 	public static Mem<String> n_m = new Mem<String>();
@@ -53,6 +57,7 @@ public class Mittelwerk {
     } 
     
     public static void begin(String fileName){
+		l_m.setFile(fileName);
     }
     
     public static void the_end(){
@@ -60,6 +65,7 @@ public class Mittelwerk {
 		System.out.println(i_m);
 		
 		e.emit();
+		err_m.finalPrint();
     }
 }
 
@@ -80,7 +86,7 @@ SKIP :
 {
       " "
     | "\t"
-    | "\n" 
+    | "\n" {Mittelwerk.l_m.nextLine();}
     | "\r"
     | "/*"   : IN_COMMENT
 }

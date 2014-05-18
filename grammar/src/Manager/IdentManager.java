@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import Ident.*;
 import Utils.Type;
+import Core.Mittelwerk;
+import Error.ErrorManager;
 
 public class IdentManager{
 	private HashMap<String, Ident> local;
@@ -24,13 +26,15 @@ public class IdentManager{
 	/*						Manage hashmap						*/
 	/************************************************************/
 	private boolean add(HashMap<String, Ident> dest, String name, Ident id){
-		if(!dest.containsKey(name)){
-			dest.put(name, id);
+		if(this.exist(name)){
+			Mittelwerk.err_m.printError(2, name);
 			
-			return true;
+			return false;
 		}
 		
-		return false;
+		dest.put(name, id);
+		
+		return true;
 	}
 	
 	public boolean addLocal(String name, Ident id){
@@ -50,7 +54,13 @@ public class IdentManager{
 	
 	
 	private Ident getIdent(HashMap<String, Ident> source, String name){
-		return source.get(name);
+		Ident result = source.get(name);
+		
+		if(result == null){
+			Mittelwerk.err_m.printError(3, name);
+		}
+		
+		return result;
 	}
 	
 	public Ident getLocalIdent(String name){
@@ -59,6 +69,11 @@ public class IdentManager{
 	
 	public Ident getGLobalIdent(String name){
 		return this.getIdent(this.global, name);
+	}
+	
+	public boolean exist(String name){
+		return this.local.get(name) != null ||
+				this.global.get(name) != null;
 	}
 	
 	
@@ -96,50 +111,8 @@ public class IdentManager{
 		}
 	}
 	
-	// private Ident buildIdVar(Type t){
-		// return new IdentVar(this.tmpName, t);
-	// }
-	
-	
-	
-	
-	
-	/* public ArrayList<IdentState> retrieveStates(){
-		ArrayList<IdentState> result = new ArrayList<IdentState>();
-		
-		for(Ident id : this.global.values()){
-			if(id instanceof IdentState){
-				result.add((IdentState) id);
-			}
-		}
-		
-		return result;		
-	} */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 	
 	
 	
