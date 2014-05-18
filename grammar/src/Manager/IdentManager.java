@@ -75,11 +75,11 @@ public class IdentManager{
 		this.addLocal(this.tmpName, id);
 	}
 	
-	public void saveLocalVar(Type t){
-		Ident id = this.buildIdVar(t);
+	// public void saveLocalVar(Type t){
+		// Ident id = this.buildIdVar(t);
 		
-		this.addLocal(this.tmpName, id);
-	}
+		// this.addLocal(this.tmpName, id);
+	// }
 	
 	public void saveGlobal(Type t, String value){
 		Ident id = this.buildId(t, value);
@@ -96,9 +96,9 @@ public class IdentManager{
 		}
 	}
 	
-	private Ident buildIdVar(Type t){
-		return new IdentVar(this.tmpName, t);
-	}
+	// private Ident buildIdVar(Type t){
+		// return new IdentVar(this.tmpName, t);
+	// }
 	
 	
 	

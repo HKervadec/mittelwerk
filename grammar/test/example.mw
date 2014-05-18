@@ -10,13 +10,15 @@ pod1 : th_pod[1]
 
 VOID maintainAltitude(DOUBLE goal){
 	DOUBLE tl0, tl1;
-	tl0 = GET_LVL(hover0);
-	tl1 = GET_LVL(hover1);
-	
 	DOUBLE current_altitude;
-	current_altitude = GET_ALTITUDE();
-	
 	DOUBLE diff;
+	
+	API_GET{
+		tl0 = GET_LVL(hover0);
+		tl1 = GET_LVL(hover1);
+		current_altitude = GET_ALTITUDE();
+	}
+	
 	diff = (current_altitude - goal) / goal;
 	
 	tl0 = MAX(0, MIN(0.5, tl0 - diff));
@@ -40,7 +42,6 @@ STATE_TOTO{
 	START
 	
 	ACTION{
-		INT test;
 		IF(t > 5){
 			SET_LVL(hover0, 1);
 			SET_LVL(hover1, 1);

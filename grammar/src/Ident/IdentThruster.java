@@ -12,4 +12,8 @@ public class IdentThruster extends Ident{
 	public String toString(){
 		return super.toString() + " " + this.s_value;
 	}
+	
+	public String getValue(){
+		return this.s_value;
+	}
 }

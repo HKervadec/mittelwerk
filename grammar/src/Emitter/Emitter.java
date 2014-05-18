@@ -3,7 +3,7 @@ package Emitter;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 
-import Emitter.Instruction.*;
+import Emitter.Instruction.*;	
 
 public class Emitter{
 	private String vesselName;
@@ -46,8 +46,8 @@ public class Emitter{
 		
 		for(Instruction inst : this.code){
 			String line = inst.convert();
-			this.output.println(line);
-			System.out.println(line);
+			this.output.print(line);
+			// System.out.print(line);
 		}
 		
 		this.output.close();

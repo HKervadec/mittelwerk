@@ -10,10 +10,14 @@ import Emitter.Instruction.*;
 
 public class Mittelwerk {
 	public static IdentManager i_m = new IdentManager();
+	public static VariableManager v_m = new VariableManager();
 	public static FunctionManager f_m = new FunctionManager();
+	public static StateManager s_m = new StateManager();
+	public static ExpressionManager e_m = new ExpressionManager();
+	
 	public static Mem<Type> t_m = new Mem<Type>();
 	public static Mem<String> n_m = new Mem<String>();
-	public static StateManager s_m = new StateManager();
+	
 	public static Emitter e = new Emitter();
 	
 	
@@ -110,6 +114,7 @@ TOKEN :
 	| < SET_LVL: "SET_LVL" >
 	| < GET_LVL: "GET_LVL" >
 	| < GET_ALTITUDE: "GET_ALTITUDE" >
+	| < API_GET: "API_GET" >
 	
 	
 	| < TRUE: "TRUE" >
@@ -186,9 +191,11 @@ void declFunctions(): {}{
 	")"
 		{f_m.commitFunction();}
 	"{"
+	(decl_local_var() ";")*
+	[api_get()]
 	set_instruction()
 	"}"
-		{e.add(new I_Simple("}\n"));}
+		{e.add(new I_Simple("}\n\n"));}
 }
 
 void args(): {}{
@@ -208,21 +215,19 @@ void set_instruction(): {}{
 }
 
 void instruction(): {}{
-	decl_local_var() ";"
-	| LOOKAHEAD(2) affect() ";"
+	LOOKAHEAD(2) affect() ";"
 	| fct_call() ";"
 	| if_()
 }
 
 void decl_local_var(): {}{
-	type() 
+	type()
+		{v_m.memorizeType(t_m.pop());}
 	<ident> 
-		{i_m.memorizeName(n_m.pop());
-			i_m.saveLocalVar(t_m.peek());}
+		{v_m.newVar(n_m.pop());}
 	("," <ident>
-			{i_m.memorizeName(n_m.pop());
-			i_m.saveLocalVar(t_m.peek());} )*
-		{t_m.drop();}
+			{v_m.newVar2(n_m.pop());} )*
+		{v_m.commitDcl();}
 }
 
 void affect(): {}{
@@ -231,22 +236,34 @@ void affect(): {}{
 
 void valeur(): {}{
 	LOOKAHEAD(2)
+		{e_m.init();}
 	expression()
+		{e_m.commit();}
 	| fct_call()
 }
 
 
 void fct_call(): {}{
 	<ident> "(" valeur() ("," valeur())* ")"
-	| build_in()
+	| built_in()
 }
 
-void build_in(): {}{
+void built_in(): {}{
 	<SET_LVL> "(" <ident> "," valeur() ")"
-	| <GET_LVL> "(" <ident> ")"
-	| <GET_ALTITUDE> "(" ")"
 	| max()
 	| min()
+}
+
+void api_get(): {}{
+	<API_GET> "{"
+		(getters() ";")*
+	"}"
+}
+
+void getters(): {}{
+	LOOKAHEAD(3)
+	<ident> "=" <GET_LVL> "(" <ident> ")"
+	| <ident> "=" <GET_ALTITUDE> "(" ")"
 }
 
 void max(): {}{
@@ -286,7 +303,7 @@ void declStates(): {}{
 		"}"
 		jmp()
 	"}"
-		{e.add(new I_Simple("}\n"));}
+		{e.add(new I_Simple("}\n\n"));}
 }
 
 void jmp(): {}{
@@ -335,10 +352,12 @@ void gotogoto(): {}{
 
 void expression() : {}
 {
+		
     simpleExpr() 
     (opRel() 
     simpleExpr() 
     )?  
+		
 }
 
 void simpleExpr() : {}
@@ -363,46 +382,46 @@ void facteur() : {}
 void primaire (): {}
 {
     value()
-    | "(" expression() ")" 
+    | "(" {e_m.addStr("(");} expression() ")" {e_m.addStr(")");}
 }
 
 void value () : {}
 { 
-    <integer>
-	| <double_>
-    | <ident> 
+    <integer> {e_m.addInt(MittelwerkTokenManager.p_int);}
+	| <double_> {e_m.addDouble(MittelwerkTokenManager.p_double);}
+    | <ident> {e_m.addIdent(MittelwerkTokenManager.p_ident);}
     | <TRUE> 
     | <FALSE>
 }
 
 void opRel() : {}
 {
-    "=="
-    | "<>" 	   
-    | "<" 	
-    | "<=" 	
-    | ">" 	
-    | ">=" 
+    "==" {e_m.addStr("==");}
+    | "!=" {e_m.addStr("!=");}
+    | "<" {e_m.addStr("<");}
+    | "<=" {e_m.addStr("<=");}
+    | ">" {e_m.addStr(">");}	
+    | ">=" {e_m.addStr(">=");}
 } 
 
 void opAdd() : {}
 {
-    "+"	
-    |  "-"  
-    | <OR> 	
+    "+"	{e_m.addStr("+");}
+    |  "-"  {e_m.addStr("-");}
+    | <OR> 	{e_m.addStr("||");}
 }
 
 void opMul() : {}
 {
-    "*"
-    | "/"		
-    | <AND>
+    "*" {e_m.addStr("*");}
+    | "/" {e_m.addStr("/");}		
+    | <AND> {e_m.addStr("&&");}
 } 
 
 void opNeg() : {}
 { 
-    "-" 
-    | <NOT>
+    "-" {e_m.addStr("-");}
+    | <NOT> {e_m.addStr("!");}
 }
 
 
