@@ -21,6 +21,7 @@ public class Mittelwerk {
 	
 	public static Mem<Type> t_m = new Mem<Type>();
 	public static Mem<String> n_m = new Mem<String>();
+	public static TextBuffer t_b = new TextBuffer();
 	
 	public static Emitter e = new Emitter();
 	
@@ -187,6 +188,7 @@ void declThrusters(): {}{
 
 void declFunctions(): {}{
 		{i_m.clearLocal();}
+		{t_b.incTab();}
 	typeFunction()
 		{f_m.setCurrentType(t_m.pop());}
 	<ident>
@@ -202,6 +204,7 @@ void declFunctions(): {}{
 	set_instruction()
 	"}"
 		{e.add(new I_Simple("}\n\n"));}
+		{t_b.decTab();}
 }
 
 void args(): {}{
@@ -221,8 +224,8 @@ void set_instruction(): {}{
 }
 
 void instruction(): {}{
-	LOOKAHEAD(2) affect() ";"
-	| fct_call() ";"
+	LOOKAHEAD(2) affect()
+	| fct_call() ";" {e.add(new I_Simple(";\n"));}
 	| if_()
 }
 
@@ -237,47 +240,130 @@ void decl_local_var(): {}{
 }
 
 void affect(): {}{
-	<ident> "=" valeur()
+		{t_b.reset();}
+	<ident> 
+		{t_b.add(n_m.pop());}
+	"=" 
+		{t_b.add("=");}
+	valeur()
+		{t_b.add(e_m.retrieveStr());}
+	 ";"
+		{t_b.add(";");}
+		{t_b.commit();}
 }
 
 void valeur(): {}{
 	LOOKAHEAD(2)
 		{e_m.init();}
 	expression()
-		{e_m.commit();}
+		// {e_m.commit();}
 	| fct_call()
 }
 
 
 void fct_call(): {}{
-	<ident> "(" valeur() ("," valeur())* ")"
+		{t_b.commit();}
+	<ident> 
+		{t_b.add(n_m.pop());}
+		"(" 
+			{t_b.add("(");}
+		(valeur() 
+			{t_b.add(e_m.retrieveStr());}
+		("," 
+			{t_b.add(",");}
+		valeur()
+			{t_b.add(e_m.retrieveStr());}
+			)* )?
+			")"
+			{t_b.add(")");}
+		{t_b.commit();}
 	| built_in()
 }
 
 void built_in(): {}{
-	<SET_LVL> "(" <ident> "," valeur() ")"
+	set_lvl()
 	| max()
 	| min()
 }
 
+void set_lvl(): {}{
+		{t_b.reset();}
+	<SET_LVL> 
+		{t_b.add("SetThrusterLevel");}
+	"(" 
+		{t_b.add("(");}
+	<ident> 
+		{t_b.add(((IdentThruster)i_m.getGlobalIdent(n_m.pop())).getValue());}
+	"," 
+		{t_b.add(",");}
+	valeur() 
+		{t_b.add(e_m.retrieveStr());}
+	")"
+		{t_b.add(")");}
+		{t_b.commit();}
+}
+
 void api_get(): {}{
 	<API_GET> "{"
-		(getters() ";")*
+		({t_b.reset();} getters() ";" {t_b.add(";"); t_b.commit();})*
 	"}"
 }
 
 void getters(): {}{
 	LOOKAHEAD(3)
-	<ident> "=" <GET_LVL> "(" <ident> ")"
-	| <ident> "=" <GET_ALTITUDE> "(" ")"
+	/* tl0 = GetThrusterLevel(th_hover[0]); */
+	<ident> 
+		{t_b.add(n_m.pop());} 
+	"=" 
+		{t_b.add("=");}
+	<GET_LVL> 
+		{t_b.add("GetThrusterLevel");}
+	"(" 
+		{t_b.add("(");}
+	<ident> 
+		{t_b.add(((IdentThruster)i_m.getGlobalIdent(n_m.pop())).getValue());} 
+	")"
+		{t_b.add(")");}
+		
+	| /* oapiGetAltitude(GetHandle(), &current_altitude) */
+	<ident> "=" <GET_ALTITUDE> 
+		{t_b.add("oapiGetAltitude");}
+		"(" 
+		{t_b.add("(");}
+		{t_b.add("GetHandle(), &");}
+		{t_b.add(n_m.pop());}
+		")"
+		{t_b.add(")");}
 }
 
 void max(): {}{
-	<MAX> "(" valeur() ( "," valeur() )+ ")"
+	<MAX> "(" 
+		{t_b.add("max(");}
+	valeur() 
+		{t_b.add(e_m.retrieveStr());
+		 e_m.init();}
+	"," 
+		{t_b.add(",");}
+	valeur() 
+		{t_b.add(e_m.retrieveStr());
+		 e_m.init();}
+	")"
+		{t_b.add(")");}
 }
 
 void min(): {}{
-	<MIN> "(" valeur() ( "," valeur() )+ ")"
+	<MIN> "(" 
+		{t_b.add("min(");}
+	valeur() 
+		{t_b.add(e_m.retrieveStr());
+		 e_m.init();}
+	"," 
+		{t_b.add(",");}
+	valeur() 
+		{t_b.add(e_m.retrieveStr());
+		 e_m.init();}
+	")"
+		{t_b.add(")");}
 }
 
 
@@ -300,6 +386,7 @@ void type(): {}{
 
 void declStates(): {}{
 		{i_m.clearLocal();}
+		{t_b.incTab();}
 	<state> 
 		{s_m.addState(n_m.pop());} 
 	"{"
@@ -310,6 +397,7 @@ void declStates(): {}{
 		jmp()
 	"}"
 		{e.add(new I_Simple("}\n\n"));}
+		{t_b.decTab();}
 }
 
 void jmp(): {}{
@@ -321,24 +409,51 @@ void jmp(): {}{
 
 
 void if_(): {}{
-	<IF> "(" valeur() ")" "{"
+		{t_b.reset();}
+	<IF> "(" 
+		{t_b.add("if(");}
+		valeur() 
+			{t_b.add(e_m.retrieveStr());}
+		")" "{"
+			{t_b.add("){");}
+			{t_b.incTab();}
+			{t_b.commit();}
 		set_instruction()
 	"}"
+		{t_b.decTab();}
+		{t_b.reset();
+		 t_b.add("}");
+		 t_b.commit();}
 	( <ELSE> ("{" set_instruction() "}"
 		| instruction()))?
+		{e.add(new I_Simple("\n\n"));}
 }
 
 void if_goto(): {}{
-	<IF> "(" valeur() ")" "{"
+		{t_b.reset();}
+	<IF> "(" 
+		{t_b.add("if(");}
+		valeur() 
+			{t_b.add(e_m.retrieveStr());}
+		")" "{"
+			{t_b.add("){");}
+			{t_b.incTab();}
+			{t_b.commit();}
 		set_instruction()
 		gotogoto() ";"
 	"}"
+		{t_b.decTab();}
+		{t_b.reset();
+		 t_b.add("}");
+		 t_b.commit();}
 	( <ELSE> ("{" set_instruction() gotogoto() ";" "}"
 		| gotogoto() ";"))?
+		{e.add(new I_Simple("\n\n"));}
 }
 
 void gotogoto(): {}{
 	<GOTOGOTO> <state>
+		{s_m.gotogoto(n_m.pop());}
 }
 
 
@@ -358,7 +473,6 @@ void gotogoto(): {}{
 
 void expression() : {}
 {
-		
     simpleExpr() 
     (opRel() 
     simpleExpr() 

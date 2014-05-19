@@ -67,7 +67,7 @@ public class IdentManager{
 		return this.getIdent(this.local, name);
 	}
 	
-	public Ident getGLobalIdent(String name){
+	public Ident getGlobalIdent(String name){
 		return this.getIdent(this.global, name);
 	}
 	

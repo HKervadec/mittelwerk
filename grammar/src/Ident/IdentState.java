@@ -9,6 +9,10 @@ public class IdentState extends Ident{
 		this.number = number;
 	}
 	
+	public int getNumber(){
+		return this.number;
+	}
+	
 	public String toString(){
 		return super.toString() + " " + this.number;
 	}

@@ -60,9 +60,9 @@ public class Emitter{
 	/*						Hardcoded c++						*/
 	/*					That's pretty shitty					*/
 	/************************************************************/
-	private void header(){
+	/* private void header(){
 		String head = "#include \"" + this.vesselName + ".h\"";
 		this.code.add(new I_Simple(head));
 		this.code.add(new I_blank(2));
-	}
+	} */
 }

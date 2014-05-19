@@ -34,12 +34,16 @@ public class ExpressionManager{
 		if(id != null){
 			this.addStr(id.getName()); // why?
 		}else{
-			id = Mittelwerk.i_m.getGLobalIdent(n);
+			id = Mittelwerk.i_m.getGlobalIdent(n);
 			
 			if(id instanceof IdentThruster){
 				this.addStr(((IdentThruster) id).getValue());
 			}
 		}
+	}
+	
+	public String retrieveStr(){
+		return this.current_expression;
 	}
 	
 	public void commit(){

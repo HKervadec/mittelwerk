@@ -8,7 +8,7 @@ public class I_Header extends Instruction{
 	}
 	
 	public String convert(){
-		return String.format("#include \"%s\"\n\n", 
+		return String.format("#include \"%s.h\"\n\n", 
 			Mittelwerk.e.getVesselName());
 	}
 }

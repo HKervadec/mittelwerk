@@ -3,8 +3,13 @@ package Manager;
 import java.util.ArrayList;
 
 import Ident.IdentState;
+import Ident.IdentVar;
+import Ident.Ident;
 import Core.Mittelwerk;
 import Emitter.Instruction.I_StateHeader;
+import Emitter.Instruction.I_Goto;
+import Emitter.Emitter;
+import Utils.Type;
 
 public class StateManager{
 	private int state_number;
@@ -18,6 +23,11 @@ public class StateManager{
 	public void addState(String n){
 		Mittelwerk.i_m.addGlobal(n, new IdentState(n, state_number++));
 		this.state_names.add(n);
+		
+		Mittelwerk.i_m.addLocal("t", new IdentVar("simt", Type.DOUBLE));
+		Mittelwerk.i_m.addLocal("dt", new IdentVar("simdt", Type.DOUBLE));
+		Mittelwerk.i_m.addLocal("mjd", new IdentVar("mjd", Type.DOUBLE));
+		
 		
 		Mittelwerk.e.add(new I_StateHeader(n));
 	}
@@ -33,5 +43,10 @@ public class StateManager{
 	*/
 	public ArrayList<String> getStateNames(){
 		return this.state_names;
+	}
+	
+	
+	public void gotogoto(String name){
+		Mittelwerk.e.add(new I_Goto(name));
 	}
 }

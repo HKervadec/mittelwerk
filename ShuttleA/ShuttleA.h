@@ -143,12 +143,10 @@ private:
 	// OTTO
 	int m_state = 0;
 	void postStep(double simt, double simdt, double mjd);
-	void state0(double simt, double simdt, double mjd);
-	void state1(double simt, double simdt, double mjd);
-
 
 	void maintainAltitude(double goal);
-	void maintainCardinal(double goal);
+	void STATE_TOTO(double simt, double simdt, double mjd);
+	void STATE_1(double simt, double simdt, double mjd);
 
 
 

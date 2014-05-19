@@ -114,7 +114,6 @@
     <Library Include="..\Orbitersdk\lib\Orbitersdk.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Otto.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ShuttleA.h" />
   </ItemGroup>
