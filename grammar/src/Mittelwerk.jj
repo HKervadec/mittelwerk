@@ -132,6 +132,9 @@ TOKEN :
 	
 	| <IF: "IF" >
 	| <ELSE: "ELSE" >
+	| <WHILE: "WHILE" >
+	
+	| <RETURN: "RETURN" >
 }
 
 
@@ -227,6 +230,9 @@ void instruction(): {}{
 	LOOKAHEAD(2) affect()
 	| fct_call() ";" {e.add(new I_Simple(";\n"));}
 	| if_()
+	| while_()
+	| return_()
+	| gotogoto() ";"
 }
 
 void decl_local_var(): {}{
@@ -403,7 +409,8 @@ void declStates(): {}{
 void jmp(): {}{
 	<FINAL>
 	| <GOTO> "{"
-		(if_goto())+
+		// (if_goto())+
+		set_instruction()
 		"}"
 }
 
@@ -437,26 +444,61 @@ void if_goto(): {}{
 			{t_b.add(e_m.retrieveStr());}
 		")" "{"
 			{t_b.add("){");}
-			{t_b.incTab();}
 			{t_b.commit();}
+			{t_b.incTab();}
 		set_instruction()
-		gotogoto() ";"
 	"}"
 		{t_b.decTab();}
 		{t_b.reset();
 		 t_b.add("}");
 		 t_b.commit();}
-	( <ELSE> ("{" set_instruction() gotogoto() ";" "}"
+	( <ELSE> ("{" set_instruction() "}"
 		| gotogoto() ";"))?
 		{e.add(new I_Simple("\n\n"));}
 }
+
+
+/* void set_instruction_goto(): {}{
+	(instruction()
+	| gotogoto() ";")*
+} */
 
 void gotogoto(): {}{
 	<GOTOGOTO> <state>
 		{s_m.gotogoto(n_m.pop());}
 }
 
+void while_(): {}{
+		{t_b.reset();}
+	<WHILE>
+	"("
+		{t_b.add("while(");}
+	valeur()
+		{t_b.add(e_m.retrieveStr());}
+	")"
+	"{"
+		{t_b.add("){");}
+		{t_b.commit();}
+		{t_b.incTab();}
+		
+		set_instruction()
+	"}"
+		{t_b.decTab();}
+		{t_b.reset();
+		 t_b.add("}");
+		 t_b.commit();}
+}
 
+void return_(): {}{
+		{t_b.reset();}
+	<RETURN>
+		{t_b.add("return");}
+	valeur()
+		{t_b.add(e_m.retrieveStr());}
+	";"
+		{t_b.add(";");}
+		{t_b.commit();}
+}
 
 
 

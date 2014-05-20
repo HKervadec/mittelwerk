@@ -147,6 +147,7 @@ private:
 	void maintainAltitude(double goal);
 	void STATE_TOTO(double simt, double simdt, double mjd);
 	void STATE_1(double simt, double simdt, double mjd);
+	double test(int n);
 
 
 
