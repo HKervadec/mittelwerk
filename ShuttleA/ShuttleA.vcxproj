@@ -41,8 +41,8 @@
     <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Prog\github\mittelwerk\Orbitersdk\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Prog\github\mittelwerk\Orbitersdk\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Orbitersdk\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Orbitersdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>

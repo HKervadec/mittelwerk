@@ -8,14 +8,23 @@ import Utils.Type;
 import Core.Mittelwerk;
 import Error.ErrorManager;
 
+
+/**
+ * The IdentManager allow to remember the names of functions, variables, etc.
+ * We can access them via their name, and it'll return an identifier, containing
+ * every usefull information
+ * 
+ * It has two separate hashmap, a global one, and a local one. Basically, the
+ * local one is cleaned at the beginning of every function/state definition.
+ *
+ * See the Ident documentation for more informations about it.
+ */
 public class IdentManager{
 	private HashMap<String, Ident> local;
 	private HashMap<String, Ident> global;
 	
 	private String tmpName;
 	
-
-
 	public IdentManager(){
 		this.local = new HashMap<String, Ident>();
 		this.global = new HashMap<String, Ident>();
@@ -25,6 +34,22 @@ public class IdentManager{
 	/************************************************************/
 	/*						Manage hashmap						*/
 	/************************************************************/
+	
+    /**
+	 * Private fonction used to save an indentifier into a specific localtion.
+	 * If the ident already exist, it won't be saved
+	 *
+	 *	NEED TO IMPLEMENTED ERRORS
+	 *
+	 * @param dest The destination : local or global.
+     * @param name The name of the identifier, the one we will use later to 
+	 * access it.
+     * @param id The identifier itself.
+     * @return boolean True if the param has been successfully added, false 
+	 * otherwise
+	 * @see addLocal
+	 * @see addGlobal
+     */
 	private boolean add(HashMap<String, Ident> dest, String name, Ident id){
 		if(this.exist(name)){
 			Mittelwerk.err_m.printError(2, name);
@@ -37,15 +62,37 @@ public class IdentManager{
 		return true;
 	}
 	
+    /**
+     * Add an id into the local hashmap. Return false if the identifier 
+	 * already exist.
+     * 
+     * @param name name of the Ident
+     * @param id The ident itself
+     * @return boolean True is sucess, false otherwise
+     */
 	public boolean addLocal(String name, Ident id){
 		return this.add(this.local, name, id);
 	}
 	
+    /**
+     * Add an id into the global hashmap. Return false if the identifier 
+	 * already exist.
+     * 
+     * @param name name of the Ident
+     * @param id The ident itself
+     * @return boolean True is sucess, false otherwise
+     */
 	public boolean addGlobal(String name, Ident id){
 		return this.add(this.global, name, id);
 	}
 	
 	
+	
+    /**
+     * Clear the local hashmap.
+	 *
+     * It should be done at the beginning of a function/state. 
+     */
 	public void clearLocal(){
 		// System.out.println(this);
 	
@@ -53,6 +100,15 @@ public class IdentManager{
 	}
 	
 	
+    /**
+     * Return an ident, by looking into the specified source.
+     *
+	 * If not found, an error (id: 3) will be called with the error manager.
+	 *
+	 * @param source Local or global
+     * @param name Name of the ident
+     * @return Ident The Ident, null if not found.
+     */
 	private Ident getIdent(HashMap<String, Ident> source, String name){
 		Ident result = source.get(name);
 		
@@ -63,14 +119,38 @@ public class IdentManager{
 		return result;
 	}
 	
+	
+	
+    /**
+     * Return a local Ident, searching with the name.
+     * 
+     * @param name Name of the Ident
+     * @return Ident The ident, null if not found.
+	 * @see getIdent
+     */
 	public Ident getLocalIdent(String name){
 		return this.getIdent(this.local, name);
 	}
 	
+	/**
+     * Return a global Ident, searching with the name.
+     * 
+     * @param name Name of the Ident
+     * @return Ident The ident, null if not found.
+	 * @see getIdent
+     */
 	public Ident getGlobalIdent(String name){
 		return this.getIdent(this.global, name);
 	}
 	
+	
+	
+    /**
+     * Test if an ident exist, looking by name into the local and global hashmap.
+     * 
+     * @param name The ident name
+     * @return boolean True if found in local and/or global, false otherwise.
+     */
 	public boolean exist(String name){
 		return this.local.get(name) != null ||
 				this.global.get(name) != null;

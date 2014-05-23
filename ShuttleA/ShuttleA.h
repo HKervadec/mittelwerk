@@ -150,7 +150,6 @@ private:
 	double test(int n);
 
 
-
 	void DefineAnimations ();
 	bool ToggleGrapple (int grapple);
 	double payload_mass;

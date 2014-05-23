@@ -5,12 +5,26 @@ import java.io.PrintWriter;
 
 import Emitter.Instruction.*;	
 
+
+/**
+ * This class is just a big list of instructions.
+ * They will be translated into c++ at the end of the parsing process, using
+ * their convert() function.
+ * 
+ * Currently, it does not have a function to change the default output.
+ */
 public class Emitter{
 	private String vesselName;
 	private PrintWriter output;
 	private ArrayList<Instruction> code;
 	
 	
+    /**
+     * Create the emitter. The default output is hardcoded.
+     * 
+	 * Initialize his instructions array, and add the instructions for 
+	 * the header and the postStep function.
+     */
 	public Emitter(){
 		this.code = new ArrayList<Instruction>();
 	
@@ -21,6 +35,7 @@ public class Emitter{
 		this.code.add(new I_Header());
 		this.code.add(new I_PostStep());
 	}
+	
 	
 	public String getVesselName(){
 		return this.vesselName;
@@ -40,10 +55,6 @@ public class Emitter{
 	/************************************************************/
 	
 	public void emit(){
-		// this.header();
-		
-		// this.postStep();
-		
 		for(Instruction inst : this.code){
 			String line = inst.convert();
 			this.output.print(line);
@@ -52,17 +63,4 @@ public class Emitter{
 		
 		this.output.close();
 	}
-	
-	
-	
-	
-	/************************************************************/
-	/*						Hardcoded c++						*/
-	/*					That's pretty shitty					*/
-	/************************************************************/
-	/* private void header(){
-		String head = "#include \"" + this.vesselName + ".h\"";
-		this.code.add(new I_Simple(head));
-		this.code.add(new I_blank(2));
-	} */
 }
