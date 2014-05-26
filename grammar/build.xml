@@ -3,6 +3,7 @@
 	<property name="src.dir" location="src" />
 	<property name="class.dir" location="class" />
 	<property name="doc.dir" location="doc" />
+	<property name="result.dir" location="result" />
 	<property name="javacc.dir" location="C:\Program Files (x86)\Java\javacc-5.0" />
 	
 	<target name="grammar" depends="clean">
@@ -14,6 +15,7 @@
 	
 	<target name="compile">
 		<mkdir dir="${class.dir}" />
+		<mkdir dir="${result.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${class.dir}"></javac>
 	</target>
 	
@@ -26,6 +28,7 @@
 		<delete dir="${class.dir}" />
 		<delete dir="${src.dir}/Core" />
 		<delete dir="${doc.dir}" />
+		<delete dir="${result.dir}" />
 	</target>
 	
 	<target name="doc" depends="clean, grammar">
