@@ -397,6 +397,9 @@ void declStates(): {}{
 		{s_m.addState(n_m.pop());} 
 	"{"
 		[ <START> ]
+		
+		[api_get()]
+		
 		<ACTION> "{"
 			set_instruction()
 		"}"
