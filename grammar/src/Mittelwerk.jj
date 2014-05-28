@@ -117,12 +117,14 @@ TOKEN :
 	
 	| < MIN: "MIN" >
 	| < MAX: "MAX" >
+	| < PI: "PI" >
 	
 	| < SET_LVL: "SET_LVL" >
 	| < GET_LVL: "GET_LVL" >
 	| < GET_ALTITUDE: "GET_ALTITUDE" >
 	| < API_GET: "API_GET" >
 	
+	| < SET_POD_ANGLE: "SET_POD_ANGLE" >
 	
 	| < TRUE: "TRUE" >
 	| < FALSE: "FALSE" >
@@ -288,6 +290,7 @@ void fct_call(): {}{
 
 void built_in(): {}{
 	set_lvl()
+	| set_pod_angle()
 	| max()
 	| min()
 }
@@ -303,6 +306,23 @@ void set_lvl(): {}{
 	"," 
 		{t_b.add(",");}
 	valeur() 
+		{t_b.add(e_m.retrieveStr());}
+	")"
+		{t_b.add(")");}
+		{t_b.commit();}
+}
+
+void set_pod_angle(): {}{
+		{t_b.reset();}
+	<SET_POD_ANGLE>
+		{t_b.add("SetPodAngle");}
+	"("
+		{t_b.add("(");}
+	valeur()
+		{t_b.add(e_m.retrieveStr());}
+	","
+		{t_b.add(",");}
+	valeur()
 		{t_b.add(e_m.retrieveStr());}
 	")"
 		{t_b.add(")");}
@@ -522,8 +542,9 @@ void value () : {}
     <integer> {e_m.addInt(MittelwerkTokenManager.p_int);}
 	| <double_> {e_m.addDouble(MittelwerkTokenManager.p_double);}
     | <ident> {e_m.addIdent(MittelwerkTokenManager.p_ident);}
-    | <TRUE> 
-    | <FALSE>
+    | <TRUE> {e_m.addStr("true");}
+    | <FALSE> {e_m.addStr("false");}
+	| <PI> {e_m.addStr("PI");}
 }
 
 void opRel() : {}

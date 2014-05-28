@@ -26,6 +26,7 @@ VOID maintainAltitude(DOUBLE goal){
 	
 	SET_LVL(hover0, MAX(tl0, tl0));
 	SET_LVL(hover1, tl1);
+	SET_POD_ANGLE(1, PI);
 }
 
 DOUBLE test(INT n){

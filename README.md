@@ -12,6 +12,11 @@ Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](htt
 * Generate functions header for the ShuttleA.h
 * Tool to automagically paste the generated code into the vessel
 * Argument to set the output files
+* Refactor
+  * Extrn declaration at the beginning of file, to use function in the vessel code, not in the api
+    * It would allow us to change more easily the ship
+  * Use of a beautifier third party script
+    * This way, we will not have to manage the code indentation, etc.
 
 * Generate a nice Mittelwerk.jar
 
