@@ -16,6 +16,7 @@ public class Mittelwerk {
 	public static StateManager s_m = new StateManager();
 	public static ExpressionManager e_m = new ExpressionManager();
 	public static LineManager l_m = new LineManager();
+	public static ApiGet a_g = new ApiGet();
 	
 	public static ErrorManager err_m = new ErrorManager();
 	
@@ -339,35 +340,24 @@ void set_pod_angle(): {}{
 
 void api_get(): {}{
 	<API_GET> "{"
-		({t_b.reset();} getters() ";" {t_b.add(";"); t_b.commit();})*
+		(get())*
 	"}"
 }
 
-void getters(): {}{
-	LOOKAHEAD(3)
-	/* tl0 = GetThrusterLevel(th_hover[0]); */
-	<ident> 
-		{t_b.add(n_m.pop());} 
+void get(): {}{
+		{a_g.reset();}
+	<ident> {a_g.addDest(n_m.pop());} ("," <ident> {a_g.addDest(n_m.pop());})* 
 	"=" 
-		{t_b.add("=");}
-	<GET_LVL> 
-		{t_b.add("GetThrusterLevel");}
-	"(" 
-		{t_b.add("(");}
-	<ident> 
-		{t_b.add(((IdentThruster)i_m.getGlobalIdent(n_m.pop())).getValue());} 
-	")"
-		{t_b.add(")");}
-		
-	| /* oapiGetAltitude(GetHandle(), &current_altitude) */
-	<ident> "=" <GET_ALTITUDE> 
-		{t_b.add("oapiGetAltitude");}
-		"(" 
-		{t_b.add("(");}
-		{t_b.add("GetHandle(), &");}
-		{t_b.add(n_m.pop());}
-		")"
-		{t_b.add(")");}
+	getters_name() 
+		{a_g.setGetter(n_m.pop());}
+	"(" (<ident> {a_g.addArg(n_m.pop());} ("," <ident> {a_g.addArg(n_m.pop());} )*)? ")"	
+	";"
+		{a_g.commit();}
+}
+
+void getters_name(): {}{
+	<GET_LVL> {n_m.push("GetThrusterLevel");}
+	| <GET_ALTITUDE> {n_m.push("oapiGetAltitude");}
 }
 
 void max(): {}{

@@ -4,9 +4,13 @@ This is a school project for the 3info from the [INSA-Rennes](http://www.insa-re
 
 Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](http://orbit.medphys.ucl.ac.uk/), allowing us to write basic automata without technical knowledge.
 
+## STATUS
+Currently, the compiler is made and support only one ship, the **ShuttleA**.
+
+
 ## TODO (Ordered by importance)
-* Tool to automagically paste the generated code into the vessel
 * More api functions
+* Tool to automagically paste the generated code into the vessel
 * Compiler errors management
   * Type verification for expression and function call
 * And some warning
@@ -39,7 +43,7 @@ See the example.mw
 
 ### Orbiter compilation
 * Visual Studio (we use the 2013 pro version)
-* Orbiter 2010 sdk
+* Orbiter 2010 sdk (currently in the git repository)
 
 
 ## Howto
