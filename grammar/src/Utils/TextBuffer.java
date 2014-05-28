@@ -38,7 +38,7 @@ public class TextBuffer{
 	public void commit(){
 		this.text += "\n";
 		
-		System.out.println(this.text);
+		// System.out.println(this.text);
 		Mittelwerk.e.add(new I_Simple(this.text));
 		
 		this.reset();

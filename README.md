@@ -5,13 +5,13 @@ This is a school project for the 3info from the [INSA-Rennes](http://www.insa-re
 Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](http://orbit.medphys.ucl.ac.uk/), allowing us to write basic automata without technical knowledge.
 
 ## TODO
+* Generate functions header for the ShuttleA.h
+* Tool to automagically paste the generated code into the vessel
+* Argument to set the output files
 * Compiler errors management
   * Type verification for expression and function call
 * And some warning
   * When two or more state got the START/FINAL token
-* Generate functions header for the ShuttleA.h
-* Tool to automagically paste the generated code into the vessel
-* Argument to set the output files
 * Refactor
   * Extrn declaration at the beginning of file, to use function in the vessel code, not in the api
     * It would allow us to change more easily the ship
@@ -32,11 +32,11 @@ See the example.mw
 ## Requirements
 
 ### Mittelwerk Compiler
-* Jdk
-* Javacc 5.0
-* Ant
-  * Ant plug-in for doxygen
-* Python 3
+* [Jdk](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (7 or later)
+* [Javacc 5.0](https://java.net/projects/javacc/downloads)
+* [Ant](https://ant.apache.org/manual/index.html)
+  * [Ant plug-in for doxygen](http://ant-doxygen.blogspot.fr/)
+* [Python 3](https://www.python.org/downloads/) or later
 
 ### Orbiter compilation
 * Visual Studio (we use the 2013 pro version)

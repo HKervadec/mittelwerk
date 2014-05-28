@@ -2,6 +2,7 @@ package Emitter;
 
 import java.util.ArrayList;
 import java.io.PrintWriter;
+import java.io.File;
 
 import Emitter.Instruction.*;	
 
@@ -26,14 +27,29 @@ public class Emitter{
 	 * the header and the postStep function.
      */
 	public Emitter(){
+		this("result/Otto.cpp");
+	}
+	
+	
+	public Emitter(String path){
 		this.code = new ArrayList<Instruction>();
 	
-		try{
-			this.output = new PrintWriter("result/Otto.cpp", "UTF-8");
-		}catch(Exception e){}
+		this.setOutput(path);
 		
 		this.code.add(new I_Header());
 		this.code.add(new I_PostStep());
+	}
+	
+	public void setOutput(String path){
+		try{
+			File file = new File(path);
+			file.getParentFile().mkdirs();
+			
+			this.output = new PrintWriter(file, "UTF-8");
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			System.out.println("test");
+		}
 	}
 	
 	

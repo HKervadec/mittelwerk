@@ -23,7 +23,7 @@ public class Mittelwerk {
 	public static Mem<String> n_m = new Mem<String>();
 	public static TextBuffer t_b = new TextBuffer();
 	
-	public static Emitter e = new Emitter();
+	public static Emitter e;
 	
 	
     public static void main(String args[]) { 
@@ -37,8 +37,14 @@ public class Mittelwerk {
                 System.out.println(e.getMessage());
                 return;
             }
+			
+			if(args.length == 2){
+				e = new Emitter(args[1]);
+			}else{
+				e = new Emitter();
+			}
 		}else{
-            System.out.println("java Mittelwerk <input.mw>");
+            System.out.println("java Mittelwerk <input.mw> <output>");
             return;
         }
 		

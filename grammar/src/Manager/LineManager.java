@@ -62,9 +62,9 @@ public class LineManager{
             Mittelwerk.err_m.printError(1, this.fileName);
         }
         
-        if(this.current_line == null){
+		/* if(this.current_line == null){
             Mittelwerk.err_m.printError(1, this.fileName);
-        }
+        } */
         
         this.line_number++;
     }
