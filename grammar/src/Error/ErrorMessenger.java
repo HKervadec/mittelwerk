@@ -28,6 +28,7 @@ public class ErrorMessenger{
 		this.addError(1, "EOF", "Unexpected End Of File found.");
 		this.addError(2, "Ident already exist", "Identifier already in use:");
 		this.addError(3, "Ident does not exist", "Identifier unknown");
+		this.addError(4, "START already declared", "An initial state has already be declared. It will override the previous initial state.");
 	}
 	
 	private void addError(int id, String t, String m){

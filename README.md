@@ -4,10 +4,9 @@ This is a school project for the 3info from the [INSA-Rennes](http://www.insa-re
 
 Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](http://orbit.medphys.ucl.ac.uk/), allowing us to write basic automata without technical knowledge.
 
-## TODO
-* Generate functions header for the ShuttleA.h
+## TODO (Ordered by importance)
 * Tool to automagically paste the generated code into the vessel
-* Argument to set the output files
+* More api functions
 * Compiler errors management
   * Type verification for expression and function call
 * And some warning
@@ -18,9 +17,9 @@ Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](htt
   * Use of a beautifier third party script
     * This way, we will not have to manage the code indentation, etc.
 
-* Generate a nice Mittelwerk.jar
-
 * Suppress the visual studio requirement
+
+* Generate a nice Mittelwerk.jar
 
 
 ## Grammar
@@ -51,17 +50,17 @@ See the example.mw
 
 ### Compile an automata
 * Write your automata in a file, for example, t800.mw
-* > java -cp class Core.Mittelwerk t800.mw
-* You will have a Otto.cpp generated in the result directory
+* > java -cp class Core.Mittelwerk t800.mw <optional_output.cpp> <optional_output.h>
+* <optional_output.cpp> contains the code of the automata, in a separate file.
+* <optional_output.h> contains the code that must be pasted in the vessel header.
 
 ### Recompile the Ship dll
+We suppose the code is generated in *Otto.cpp* and *header.h*.
 * Open the ship project with Visual Studio
 * Add the Otto.cpp file into it
 * Find the clbkPostStep function into the ship code (ShuttleA.cpp)
   * Add the following line at the beginning of it
   * postStep(simt, simdt, mjd);
-* Go into the ship header (ShuttleA.h), into the private section
-  * Add "int m_state = 0;"
-  * Add header for every function in the Otto.cpp
-  * This part will be suppressed in future version of the tool chain :)
+* Go into the ship header (ShuttleA.h), into the private section.
+  * Paste the content of header.h into it.
 

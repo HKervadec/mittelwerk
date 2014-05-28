@@ -45,7 +45,7 @@ print("**** Launching tests ****")
 for file in testFiles:
     print(">>> " + file)
     try:
-        pPrint(check_output("java -cp class Core.Mittelwerk {0}/{1} result/Otto.cpp".format(testFolder, file), \
+        pPrint(check_output("java -cp class Core.Mittelwerk {0}/{1} result/Otto.cpp result/header.h".format(testFolder, file), \
                             shell=True, stderr=STDOUT))
     except CalledProcessError as e:
         pPrint(e.output)

@@ -15,6 +15,9 @@ public class StateManager{
 	private int state_number;
 	private ArrayList<String> state_names;
 	
+	private int initial_state = 0;
+	private boolean state_initialized = false;
+	
 	public StateManager(){
 		this.state_number = 0;
 		this.state_names = new ArrayList<String>();
@@ -48,5 +51,19 @@ public class StateManager{
 	
 	public void gotogoto(String name){
 		Mittelwerk.e.add(new I_Goto(name));
+	}
+	
+	public void setInitialState(){
+		if(this.state_initialized){
+			/* Error Manager already initialized */
+			Mittelwerk.err_m.printError(4);
+		}
+		
+		this.initial_state = this.state_number - 1;
+		this.state_initialized = true;
+	}
+	
+	public int getInitialState(){
+		return this.initial_state;
 	}
 }

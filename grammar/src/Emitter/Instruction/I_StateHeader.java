@@ -9,6 +9,10 @@ public class I_StateHeader extends Instruction{
 		this.name = n;
 	}
 	
+	public I_StateHeaderHeader genHeader(){
+		return new I_StateHeaderHeader(this.name);
+	}
+	
 	public String convert(){
 		String r = "";
 		r += String.format("void %s::%s", Mittelwerk.e.getVesselName(), name);

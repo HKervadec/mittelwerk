@@ -4,24 +4,18 @@ import java.util.ArrayList;
 import java.io.PrintWriter;
 import java.io.File;
 
-import Emitter.Instruction.*;	
+import Emitter.Instruction.*;
+import Core.Mittelwerk;
+import Manager.StateManager;
 
 
 /**
- * This class is just a big list of instructions.
- * They will be translated into c++ at the end of the parsing process, using
- * their convert() function.
- * 
- * Currently, it does not have a function to change the default output.
+ * Generate the instructions for the vessel header
  */
-public class Emitter{
-	private EmitterHeader header;
-
+public class EmitterHeader{
 	private PrintWriter output;
 	private ArrayList<Instruction> code;
-
-	private String vesselName;
-		
+	
 	
     /**
      * Create the emitter. The default output is hardcoded.
@@ -29,23 +23,15 @@ public class Emitter{
 	 * Initialize his instructions array, and add the instructions for 
 	 * the header and the postStep function.
      */
-	public Emitter(){
-		this("result/Otto.cpp", "result/header.h");
+	public EmitterHeader(){
+		this("result/ShuttleA.h");
 	}
 	
-	public Emitter(String path){
-		this(path, "result/ShuttleA.h");
-	}
 	
-	public Emitter(String path, String path_header){
-		this.header = new EmitterHeader(path_header);
-		
+	public EmitterHeader(String path){
 		this.code = new ArrayList<Instruction>();
 	
 		this.setOutput(path);
-		
-		this.code.add(new I_Header());
-		this.code.add(new I_PostStep());
 	}
 	
 	public void setOutput(String path){
@@ -58,25 +44,9 @@ public class Emitter{
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	
-	public String getVesselName(){
-		return this.vesselName;
-	}
-	public void setVesselName(String n){
-		this.vesselName = n;
-	}
-	
-	
-	
+
 	public void add(Instruction i){
 		this.code.add(i);
-		
-		if(i instanceof I_FunctionHeader){
-			this.header.add(((I_FunctionHeader) i).genHeader());
-		}else if(i instanceof I_StateHeader){	
-			this.header.add(((I_StateHeader) i).genHeader());
-		}
 	}
 	
 	/************************************************************/
@@ -84,7 +54,8 @@ public class Emitter{
 	/************************************************************/
 	
 	public void emit(){
-		this.header.emit();
+		this.addInitialState();
+		this.addPostStep();
 	
 		for(Instruction inst : this.code){
 			String line = inst.convert();
@@ -93,5 +64,16 @@ public class Emitter{
 		}
 		
 		this.output.close();
+	}
+	
+	private void addInitialState(){
+		int initial_state = Mittelwerk.s_m.getInitialState();
+		String text = String.format("int m_state = %d;\n", initial_state);
+		
+		this.add(new I_Simple(text));
+	}
+	
+	private void addPostStep(){
+		this.add(new I_Simple("void postStep(double simt, double simdt, double mjd);\n"));
 	}
 }
