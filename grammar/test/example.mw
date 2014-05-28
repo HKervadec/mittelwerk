@@ -49,29 +49,22 @@ DOUBLE test(INT n){
 STATE_TOTO{
 	START
 	
-	ACTION{
-		IF(t > 5){
-			SET_LVL(hover0, 1);
-			SET_LVL(hover1, 1);
-		}
-	}
+	DOUBLE foo;
 
-	
-	GOTO{
-		IF(t > 5){
-			IF(t > 10){
-				GOTOGOTO STATE_1;
-			}
+	IF(t > 5){
+		SET_LVL(hover0, 1);
+		SET_LVL(hover1, 1);
+		
+		IF(t > 10){
+			GOTOGOTO STATE_1;
 		}
 	}
 }
 
 STATE_1{
-	ACTION{
-		maintainAltitude(500);
-		SET_LVL(main0, 1);
-		SET_LVL(main1, 1);
-	}
-	
 	FINAL
+	
+	maintainAltitude(500);
+	SET_LVL(main0, 1);
+	SET_LVL(main1, 1);
 }

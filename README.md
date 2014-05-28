@@ -6,6 +6,9 @@ Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](htt
 
 ## TODO
 * Compiler errors management
+  * Type verification for expression and function call
+* And some warning
+  * When two or more state got the START/FINAL token
 * Generate functions header for the ShuttleA.h
 * Tool to automagically paste the generated code into the vessel
 * Argument to set the output files
@@ -31,7 +34,7 @@ See the example.mw
 * Python 3
 
 ### Orbiter compilation
-* Visual Studio
+* Visual Studio (we use the 2013 pro version)
 * Orbiter 2010 sdk
 
 

@@ -397,26 +397,20 @@ void declStates(): {}{
 		{s_m.addState(n_m.pop());} 
 	"{"
 		[ <START> ]
+		[ <FINAL> ]
+		
+		(decl_local_var() ";")*
 		
 		[api_get()]
 		
-		<ACTION> "{"
+		// <ACTION> "{"
 			set_instruction()
-		"}"
-		jmp()
+		// "}"
+		// jmp()
 	"}"
 		{e.add(new I_Simple("}\n\n"));}
 		{t_b.decTab();}
 }
-
-void jmp(): {}{
-	<FINAL>
-	| <GOTO> "{"
-		// (if_goto())+
-		set_instruction()
-		"}"
-}
-
 
 void if_(): {}{
 		{t_b.reset();}
@@ -438,33 +432,6 @@ void if_(): {}{
 		| instruction()))?
 		{e.add(new I_Simple("\n\n"));}
 }
-
-void if_goto(): {}{
-		{t_b.reset();}
-	<IF> "(" 
-		{t_b.add("if(");}
-		valeur() 
-			{t_b.add(e_m.retrieveStr());}
-		")" "{"
-			{t_b.add("){");}
-			{t_b.commit();}
-			{t_b.incTab();}
-		set_instruction()
-	"}"
-		{t_b.decTab();}
-		{t_b.reset();
-		 t_b.add("}");
-		 t_b.commit();}
-	( <ELSE> ("{" set_instruction() "}"
-		| gotogoto() ";"))?
-		{e.add(new I_Simple("\n\n"));}
-}
-
-
-/* void set_instruction_goto(): {}{
-	(instruction()
-	| gotogoto() ";")*
-} */
 
 void gotogoto(): {}{
 	<GOTOGOTO> <state>
