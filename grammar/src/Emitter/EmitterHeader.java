@@ -14,6 +14,7 @@ import Manager.StateManager;
  */
 public class EmitterHeader{
 	private PrintWriter output;
+	private File file;
 	private ArrayList<Instruction> code;
 	
 	
@@ -36,11 +37,16 @@ public class EmitterHeader{
 	
 	public void setOutput(String path){
 		try{
-			File file = new File(path);
-			file.getParentFile().mkdirs();
+			this.file = new File(path);
 			
-			this.output = new PrintWriter(file, "UTF-8");
+			try{
+				this.file.getParentFile().mkdirs();
+			}catch(Exception e){}
+
+			this.output = new PrintWriter(this.file, "UTF-8");
 		}catch(Exception e){
+			System.out.println("Errors while creating the following file: " + path);
+			System.out.println(this.file);
 			System.out.println(e.getMessage());
 		}
 	}

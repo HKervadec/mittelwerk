@@ -18,9 +18,12 @@ public class Emitter{
 	private EmitterHeader header;
 
 	private PrintWriter output;
+	private File file;
 	private ArrayList<Instruction> code;
 
 	private String vesselName;
+	
+	private int tab_count;
 		
 	
     /**
@@ -44,17 +47,24 @@ public class Emitter{
 	
 		this.setOutput(path);
 		
+		this.tab_count = 0;
+		
 		this.code.add(new I_Header());
 		this.code.add(new I_PostStep());
 	}
 	
 	public void setOutput(String path){
 		try{
-			File file = new File(path);
-			file.getParentFile().mkdirs();
+			this.file = new File(path);
 			
-			this.output = new PrintWriter(file, "UTF-8");
+			try{
+				this.file.getParentFile().mkdirs();
+			}catch(Exception e){}
+
+			this.output = new PrintWriter(this.file, "UTF-8");
 		}catch(Exception e){
+			System.out.println("Errors while creating the following file: " + path);
+			System.out.println(this.file);
 			System.out.println(e.getMessage());
 		}
 	}
@@ -67,10 +77,19 @@ public class Emitter{
 		this.vesselName = n;
 	}
 	
+	public void incTab(){
+		this.tab_count++;
+	}
+	
+	public void decTab(){
+		this.tab_count--;
+	}
 	
 	
 	public void add(Instruction i){
 		this.code.add(i);
+		
+		i.setTabValue(this.tab_count);
 		
 		if(i instanceof I_FunctionHeader){
 			this.header.add(((I_FunctionHeader) i).genHeader());
@@ -87,8 +106,9 @@ public class Emitter{
 		this.header.emit();
 	
 		for(Instruction inst : this.code){
+			String tab = inst.genTab();
 			String line = inst.convert();
-			this.output.print(line);
+			this.output.print(tab + line);
 			// System.out.print(line);
 		}
 		

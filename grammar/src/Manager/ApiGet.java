@@ -50,23 +50,23 @@ public class ApiGet{
 		String result = "";
 		switch(this.getter){
 		case "oapiGetAltitude":
-			result = this.getAltitude();
+			this.getAltitude();
 			break;
 		case "GetThrusterLevel":
-			result = this.getThrusterLevel();
+			this.getThrusterLevel();
 			break;
 		case "oapiGetShipAirspeedVector":
-			result = this.getSpeed();
+			this.getSpeed();
 			break;
 		default:
 			Mittelwerk.err_m.printError(8, this.getter);
 			break;
 		}
 		
-		Mittelwerk.e.add(new I_Simple(result));
+		
 	}
 	
-	private String getAltitude(){
+	private void getAltitude(){
 		/* oapiGetAltitude(GetHandle(), &current_altitude) */
 		if(destList.size() > 1){
 			Mittelwerk.err_m.printError(6, this.getter);
@@ -86,10 +86,10 @@ public class ApiGet{
 		result += ";";
 		result += "\n";
 		
-		return result;
+		Mittelwerk.e.add(new I_Simple(result));
 	}
 	
-	private String getThrusterLevel(){
+	private void getThrusterLevel(){
 		/* tl0 = GetThrusterLevel(th_hover[0]); */
 		if(destList.size() > 1){
 			Mittelwerk.err_m.printError(6, this.getter);
@@ -110,10 +110,10 @@ public class ApiGet{
 		result += ";";
 		result += "\n";
 		
-		return result;
+		Mittelwerk.e.add(new I_Simple(result));
 	}
 	
-	private String getSpeed(){
+	private void getSpeed(){
 		/* oapiGetShipAirspeedVector(GetHandle(), &tmp_vector);
 		double x = tmp_vector.x;
 		double y = tmp_vector.y;
@@ -128,11 +128,16 @@ public class ApiGet{
 		
 		String result = this.getter;
 		result += "(GetHandle(), &tmp_vector);\n";
-		result += String.format("%s = tmp_vector.x;\n", this.destList.get(0));
-		result += String.format("%s = tmp_vector.y;\n", this.destList.get(1));
-		result += String.format("%s = tmp_vector.z;\n", this.destList.get(2));
+		Mittelwerk.e.add(new I_Simple(result));
 		
-		return result;
+		result = String.format("%s = tmp_vector.x;\n", this.destList.get(0));
+		Mittelwerk.e.add(new I_Simple(result));
+		
+		result = String.format("%s = tmp_vector.y;\n", this.destList.get(1));
+		Mittelwerk.e.add(new I_Simple(result));
+		
+		result = String.format("%s = tmp_vector.z;\n", this.destList.get(2));
+		Mittelwerk.e.add(new I_Simple(result));
 	}
 	
 	

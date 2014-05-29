@@ -203,7 +203,7 @@ void declThrusters(): {}{
 
 void declFunctions(): {}{
 		{i_m.clearLocal();}
-		{t_b.incTab();}
+		{e.incTab();}
 	typeFunction()
 		{f_m.setCurrentType(t_m.pop());}
 	<ident>
@@ -219,7 +219,7 @@ void declFunctions(): {}{
 	set_instruction()
 	"}"
 		{e.add(new I_Simple("}\n\n"));}
-		{t_b.decTab();}
+		{e.decTab();}
 }
 
 void args(): {}{
@@ -266,7 +266,7 @@ void affect(): {}{
 	valeur()
 		{t_b.add(e_m.retrieveStr());}
 	 ";"
-		{t_b.add(";");}
+		{t_b.add(";\n");}
 		{t_b.commit();}
 }
 
@@ -412,7 +412,7 @@ void type(): {}{
 
 void declStates(): {}{
 		{i_m.clearLocal();}
-		{t_b.incTab();}
+		{e.incTab();}
 	<state> 
 		{s_m.addState(n_m.pop());} 
 	"{"
@@ -429,7 +429,7 @@ void declStates(): {}{
 		// jmp()
 	"}"
 		{e.add(new I_Simple("}\n\n"));}
-		{t_b.decTab();}
+		{e.decTab();}
 }
 
 void if_(): {}{
@@ -439,17 +439,22 @@ void if_(): {}{
 		valeur() 
 			{t_b.add(e_m.retrieveStr());}
 		")" "{"
-			{t_b.add("){");}
-			{t_b.incTab();}
+			{t_b.add("){\n");}
+			{e.incTab();}
 			{t_b.commit();}
 		set_instruction()
 	"}"
-		{t_b.decTab();}
+		{e.decTab();}
 		{t_b.reset();
 		 t_b.add("}");
 		 t_b.commit();}
-	( <ELSE> ("{" set_instruction() "}"
-		| instruction()))?
+	( <ELSE> {t_b.add("else");} 
+		("{" 
+			{t_b.add("){\n");}
+			{e.incTab();}
+			{t_b.commit();}
+			set_instruction() "}" {t_b.add("}\n");} {e.decTab();} {t_b.commit();}
+			| instruction()))?
 		{e.add(new I_Simple("\n\n"));}
 }
 
@@ -469,11 +474,11 @@ void while_(): {}{
 	"{"
 		{t_b.add("){");}
 		{t_b.commit();}
-		{t_b.incTab();}
+		{e.incTab();}
 		
 		set_instruction()
 	"}"
-		{t_b.decTab();}
+		{e.decTab();}
 		{t_b.reset();
 		 t_b.add("}");
 		 t_b.commit();}
@@ -486,7 +491,7 @@ void return_(): {}{
 	valeur()
 		{t_b.add(e_m.retrieveStr());}
 	";"
-		{t_b.add(";");}
+		{t_b.add(";\n");}
 		{t_b.commit();}
 }
 
