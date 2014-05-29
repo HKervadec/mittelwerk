@@ -12,12 +12,7 @@ import Manager.StateManager;
 /**
  * Generate the instructions for the vessel header
  */
-public class EmitterHeader{
-	private PrintWriter output;
-	private File file;
-	private ArrayList<Instruction> code;
-	
-	
+public class EmitterHeader extends BasicEmitter{
     /**
      * Create the emitter. The default output is hardcoded.
      * 
@@ -30,54 +25,20 @@ public class EmitterHeader{
 	
 	
 	public EmitterHeader(String path){
+		super();
+		
 		this.code = new ArrayList<Instruction>();
 	
 		this.setOutput(path);
-	}
-	
-	public void setOutput(String path){
-		try{
-			this.file = new File(path);
-			
-			try{
-				this.file.getParentFile().mkdirs();
-			}catch(Exception e){}
-
-			this.output = new PrintWriter(this.file, "UTF-8");
-		}catch(Exception e){
-			System.out.println("Errors while creating the following file: " + path);
-			System.out.println(this.file);
-			System.out.println(e.getMessage());
-		}
-	}
-
-	public void add(Instruction i){
-		this.code.add(i);
-	}
-	
-	/************************************************************/
-	/*						Emit code							*/
-	/************************************************************/
-	
-	public void emit(){
-		this.addInitialState();
-		this.addPostStep();
+		
+		this.addInitialState();	
 		this.addTmpVector();
-	
-		for(Instruction inst : this.code){
-			String line = inst.convert();
-			this.output.print(line);
-			// System.out.print(line);
-		}
-		
-		this.output.close();
+		this.addPostStep();
 	}
 	
+
 	private void addInitialState(){
-		int initial_state = Mittelwerk.s_m.getInitialState();
-		String text = String.format("int m_state = %d;\n", initial_state);
-		
-		this.add(new I_Simple(text));
+		this.add(new I_InitialState());
 	}
 	
 	private void addPostStep(){

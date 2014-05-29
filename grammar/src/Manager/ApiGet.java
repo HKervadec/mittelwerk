@@ -7,7 +7,21 @@ import Emitter.Emitter;
 import Emitter.Instruction.I_Simple;
 import Ident.IdentThruster;
 
-
+/**
+ *  @file ApiGet.java
+ *  @brief Class managing the ApiGet functions.
+ *  @details An ApiGet function is a function defined in the orbiter api.
+ *  Often, is it complex to use, or at least, to complex for our goal.
+ *  
+ *  Almost getter has a different behaviour, making it more difficult to 
+ *  implement. Thus, we have a function per getter.
+ *  
+ *  The process of generating the code is simple:
+ *  	- Save the informations destinations.
+ *  	- Save the getter used.
+ *  	- Save the optional arguments.
+ *  	- And generate the fitting c++ code.
+ */
 public class ApiGet{
 	private ArrayList<String> destList;
 	private String getter;
@@ -18,36 +32,75 @@ public class ApiGet{
 		this.reset();
 	}
 	
+	/**
+	 *  @brief Empty the destList and the argList
+	 *  
+	 *  @details In fact, just recreate them. 
+	 *  
+	 *  I'M A JAVA PROGRAMMER AND I DON'T KNOW WHAT I'M DOING
+	 */
 	public void reset(){
 		this.destList = new ArrayList<String>();
 		this.argList = new ArrayList<String>();
 	}
 	
 	
+	/**
+	 *  @brief Add a destination to the list.
+	 *  
+	 *  @param [in] id The destination
+	 *  
+	 *  @details Also call the checkIdent function.
+	 */
 	public void addDest(String id){
-		this.checkLocal(id);
+		this.checkIdent(id);
 		
 		this.destList.add(id);
 	}
 	
+	/**
+	 *  @brief Set the getter that will be used.
+	 *  
+	 *  @param [in] name The getter name
+	 */
 	public void setGetter(String name){
 		this.getter = name;
 	}
 	
+	/**
+	 *  @brief Add an argument to the list.
+	 *  
+	 *  @param [in] str The argument.
+	 *  
+	 *  @details Does not any verification
+	 */
 	public void addArg(String str){
 		this.argList.add(str);
 	}
 	
 	
-	
-	private void checkLocal(String id){
+	/**
+	 *  @brief Check if an ident is a valid destination. Print an error (or 
+	 *  more) if something suspicious is found.
+	 *  
+	 *  @param [in] id The id to be checked.
+	 *  
+	 *  @details Currently, just check is it a local destination.
+	 */
+	private void checkIdent(String id){
 		if(Mittelwerk.i_m.getLocalIdent(id) == null){
 			Mittelwerk.err_m.printError(5, id);
 		}
 	}
 	
+	/**
+	 *  @brief Generate the c++ and add it to the Emitter
+	 *  
+	 *  
+	 *  @details It is in fact a big switch which call the right function.
+	 *  Print an error if the getter is unknown.
+	 */
 	public void commit(){
-		String result = "";
 		switch(this.getter){
 		case "oapiGetAltitude":
 			this.getAltitude();
@@ -62,8 +115,6 @@ public class ApiGet{
 			Mittelwerk.err_m.printError(8, this.getter);
 			break;
 		}
-		
-		
 	}
 	
 	private void getAltitude(){

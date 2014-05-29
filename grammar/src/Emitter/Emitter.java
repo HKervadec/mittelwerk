@@ -6,25 +6,11 @@ import java.io.File;
 
 import Emitter.Instruction.*;	
 
-
-/**
- * This class is just a big list of instructions.
- * They will be translated into c++ at the end of the parsing process, using
- * their convert() function.
- * 
- * Currently, it does not have a function to change the default output.
- */
-public class Emitter{
+public class Emitter extends BasicEmitter{
 	private EmitterHeader header;
-
-	private PrintWriter output;
-	private File file;
-	private ArrayList<Instruction> code;
 
 	private String vesselName;
 	
-	private int tab_count;
-		
 	
     /**
      * Create the emitter. The default output is hardcoded.
@@ -41,32 +27,16 @@ public class Emitter{
 	}
 	
 	public Emitter(String path, String path_header){
+		super();
+		
 		this.header = new EmitterHeader(path_header);
 		
 		this.code = new ArrayList<Instruction>();
 	
 		this.setOutput(path);
 		
-		this.tab_count = 0;
-		
 		this.code.add(new I_Header());
 		this.code.add(new I_PostStep());
-	}
-	
-	public void setOutput(String path){
-		try{
-			this.file = new File(path);
-			
-			try{
-				this.file.getParentFile().mkdirs();
-			}catch(Exception e){}
-
-			this.output = new PrintWriter(this.file, "UTF-8");
-		}catch(Exception e){
-			System.out.println("Errors while creating the following file: " + path);
-			System.out.println(this.file);
-			System.out.println(e.getMessage());
-		}
 	}
 	
 	
@@ -77,19 +47,13 @@ public class Emitter{
 		this.vesselName = n;
 	}
 	
-	public void incTab(){
-		this.tab_count++;
-	}
 	
-	public void decTab(){
-		this.tab_count--;
-	}
-	
-	
+	/**
+	 *  @brief Add an instruction (as in the BasicEmitter), but also add 
+	 *  instructions to the header if needed.
+	 */
 	public void add(Instruction i){
-		this.code.add(i);
-		
-		i.setTabValue(this.tab_count);
+		super.add(i);
 		
 		if(i instanceof I_FunctionHeader){
 			this.header.add(((I_FunctionHeader) i).genHeader());
@@ -98,20 +62,13 @@ public class Emitter{
 		}
 	}
 	
-	/************************************************************/
-	/*						Emit code							*/
-	/************************************************************/
-	
+	/**
+	 *  @brief Basic emitting process, and launch the emitting process for the
+	 *  header.
+	 */
 	public void emit(){
 		this.header.emit();
 	
-		for(Instruction inst : this.code){
-			String tab = inst.genTab();
-			String line = inst.convert();
-			this.output.print(tab + line);
-			// System.out.print(line);
-		}
-		
-		this.output.close();
+		super.emit();
 	}
 }

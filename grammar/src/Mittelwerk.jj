@@ -57,7 +57,8 @@ public class Mittelwerk {
             begin(args[0]);
             
             parser.v2();
-            System.out.println("analyse syntaxique reussie!");
+            System.out.println("Syntax analysis complete.");
+            System.out.println("I'm making a note here, huge success.\n");
             
             the_end();
         }catch (ParseException e){
@@ -71,8 +72,8 @@ public class Mittelwerk {
     }
     
     public static void the_end(){
-		System.out.println(e.getVesselName());
-		System.out.println(i_m);
+		// System.out.println(e.getVesselName());
+		// System.out.println(i_m);
 		
 		e.emit();
 		err_m.finalPrint();
