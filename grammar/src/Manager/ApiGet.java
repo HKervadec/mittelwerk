@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Core.Mittelwerk;
 import Emitter.Emitter;
 import Emitter.Instruction.I_Simple;
+import Ident.IdentThruster;
 
 
 public class ApiGet{
@@ -54,6 +55,9 @@ public class ApiGet{
 		case "GetThrusterLevel":
 			result = this.getThrusterLevel();
 			break;
+		case "oapiGetShipAirspeedVector":
+			result = this.getSpeed();
+			break;
 		default:
 			Mittelwerk.err_m.printError(8, this.getter);
 			break;
@@ -99,7 +103,9 @@ public class ApiGet{
 		result += " = ";
 		result += this.getter;
 		result += "(";
-		result += this.argList.get(0);
+		
+		result += ((IdentThruster) Mittelwerk.i_m.getGlobalIdent(this.argList.get(0))).getValue();
+		
 		result += ")";
 		result += ";";
 		result += "\n";
@@ -107,7 +113,27 @@ public class ApiGet{
 		return result;
 	}
 	
+	private String getSpeed(){
+		/* oapiGetShipAirspeedVector(GetHandle(), &tmp_vector);
+		double x = tmp_vector.x;
+		double y = tmp_vector.y;
+		double z = tmp_vector.z; */
+		if(destList.size() > 3){
+			Mittelwerk.err_m.printError(6, this.getter);
+		}
 	
+		if(argList.size() > 0){
+			Mittelwerk.err_m.printError(7, this.getter);
+		}
+		
+		String result = this.getter;
+		result += "(GetHandle(), &tmp_vector);\n";
+		result += String.format("%s = tmp_vector.x;\n", this.destList.get(0));
+		result += String.format("%s = tmp_vector.y;\n", this.destList.get(1));
+		result += String.format("%s = tmp_vector.z;\n", this.destList.get(2));
+		
+		return result;
+	}
 	
 	
 	

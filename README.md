@@ -5,7 +5,7 @@ This is a school project for the 3info from the [INSA-Rennes](http://www.insa-re
 Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](http://orbit.medphys.ucl.ac.uk/), allowing us to write basic automata without technical knowledge.
 
 ## STATUS
-Currently, the compiler is made and support only one ship, the **ShuttleA**.
+Currently, the compiler is made for and support only one ship, the **ShuttleA**.
 
 
 ## TODO (Ordered by importance)
@@ -13,8 +13,10 @@ Currently, the compiler is made and support only one ship, the **ShuttleA**.
 * Tool to automagically paste the generated code into the vessel
 * Compiler errors management
   * Type verification for expression and function call
+  * Void does not have returns statements.
 * And some warning
   * When two or more state got the START/FINAL token
+  * Trying to gotogoto when in the FINAL state.
 * Refactor
   * Extrn declaration at the beginning of file, to use function in the vessel code, not in the api
     * It would allow us to change more easily the ship

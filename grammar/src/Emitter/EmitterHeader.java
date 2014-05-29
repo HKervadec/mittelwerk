@@ -56,6 +56,7 @@ public class EmitterHeader{
 	public void emit(){
 		this.addInitialState();
 		this.addPostStep();
+		this.addTmpVector();
 	
 		for(Instruction inst : this.code){
 			String line = inst.convert();
@@ -75,5 +76,9 @@ public class EmitterHeader{
 	
 	private void addPostStep(){
 		this.add(new I_Simple("void postStep(double simt, double simdt, double mjd);\n"));
+	}
+	
+	private void addTmpVector(){
+		this.add(new I_Simple("VECTOR3 tmp_vector;\n"));
 	}
 }

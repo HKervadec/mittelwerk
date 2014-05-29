@@ -131,6 +131,7 @@ TOKEN :
 	| < SET_LVL: "SET_LVL" >
 	| < GET_LVL: "GET_LVL" >
 	| < GET_ALTITUDE: "GET_ALTITUDE" >
+	| < GET_SPEED: "GET_SPEED" >
 	| < API_GET: "API_GET" >
 	
 	| < SET_POD_ANGLE: "SET_POD_ANGLE" >
@@ -358,6 +359,7 @@ void get(): {}{
 void getters_name(): {}{
 	<GET_LVL> {n_m.push("GetThrusterLevel");}
 	| <GET_ALTITUDE> {n_m.push("oapiGetAltitude");}
+	| <GET_SPEED> {n_m.push("oapiGetShipAirspeedVector");}
 }
 
 void max(): {}{

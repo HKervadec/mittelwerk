@@ -22,30 +22,33 @@ void ShuttleA::maintainAltitude(double goal){
 		;
 	SetThrusterLevel(th_hover[1], tl1)
 		;
+	SetPodAngle(1, PI)
+		;
 }
 
-double ShuttleA::test(int n){
-	int i;
-	double result;
-	i = 0;
-	result = 0;
-	while (i < n){
-		result = result + 1 / n;
-		i = i + 1;
+void ShuttleA::test(){
+	double a, b, c;
+	oapiGetShipAirspeedVector(GetHandle(), &tmp_vector);
+	a = tmp_vector.x;
+	b = tmp_vector.y;
+	c = tmp_vector.z;
+	if (a < 0){
+		SetThrusterLevel(th_main[0], 1)
+			;
+		SetThrusterLevel(th_main[1], 1)
+			;
 	}
-	return result;
+
+
 }
 
 void ShuttleA::STATE_TOTO(double simt, double simdt, double mjd){
+	double foo;
 	if (simt > 5){
 		SetThrusterLevel(th_hover[0], 1)
 			;
 		SetThrusterLevel(th_hover[1], 1)
 			;
-	}
-
-
-	if (simt > 5){
 		if (simt > 10){
 			m_state = 1;
 		}
@@ -59,6 +62,9 @@ void ShuttleA::STATE_TOTO(double simt, double simdt, double mjd){
 void ShuttleA::STATE_1(double simt, double simdt, double mjd){
 
 	maintainAltitude(500)
+		;
+
+	test()
 		;
 	SetThrusterLevel(th_main[0], 1)
 		;

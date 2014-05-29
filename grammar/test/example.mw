@@ -29,19 +29,17 @@ VOID maintainAltitude(DOUBLE goal){
 	SET_POD_ANGLE(1, PI);
 }
 
-DOUBLE test(INT n){
-	INT i;
-	DOUBLE result;
+VOID test(){
+	DOUBLE a,b,c;
 	
-	i = 0;
-	result = 0;
-	
-	WHILE(i < n){
-		result = result + 1/n;
-		i = i + 1;
+	API_GET{
+		a, b, c = GET_SPEED();
 	}
 	
-	RETURN result;
+	IF(a < 0){
+		SET_LVL(main0, 1);
+		SET_LVL(main1, 1);
+	}
 }
 
 /* Commentaire de test */
@@ -66,6 +64,7 @@ STATE_1{
 	FINAL
 	
 	maintainAltitude(500);
+	test();
 	SET_LVL(main0, 1);
 	SET_LVL(main1, 1);
 }
