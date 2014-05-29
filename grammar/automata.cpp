@@ -37,7 +37,7 @@ void ShuttleA::postStep(double simt, double simdt, double mjd){
 	oapiGetAltitude(GetHandle(),&alti_no_pod);
 	SetThrusterLevel ( th_main[0] , 1  ) 	;
 	SetThrusterLevel ( th_main[1] , 1  ) 	;
-		if( alti_no_pod > 1500  ){
+		if( alti_no_pod > 500  ){
  		m_state = 2;
 	} 	
 

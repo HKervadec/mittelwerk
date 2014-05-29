@@ -46,7 +46,7 @@ STATE_2{
 	SET_LVL(main0, 1);
 	SET_LVL(main1, 1);
 	
-	IF(alti_no_pod > 2000){
+	IF(alti_no_pod > 500){
 		GOTOGOTO STATE_3;
 	}
 

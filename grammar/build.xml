@@ -3,7 +3,7 @@
 	<property name="src.dir" location="src" />
 	<property name="class.dir" location="class" />
 	<property name="doc.dir" location="doc" />
-	<property name="javacc.dir" location="C:\Program Files\Java\javacc-6.0" />
+	<property name="javacc.dir" location="C:\Program Files (x86)\Java\javacc-5.0" />
 	
 	<target name="grammar" depends="clean">
 		<mkdir dir="${src.dir}/Core" />
