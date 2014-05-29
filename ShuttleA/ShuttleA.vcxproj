@@ -118,7 +118,7 @@
     <ClInclude Include="ShuttleA.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Otto.cpp" />
+    <ClCompile Include="Automata.cpp" />
     <ClCompile Include="ShuttleA.cpp" />
   </ItemGroup>
   <ItemGroup>
