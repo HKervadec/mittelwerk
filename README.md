@@ -1,6 +1,6 @@
 # The Mittelwerk Compiler
 
-This is a school project for the 3info from the [INSA-Rennes](http://www.insa-rennes.fr/en.html).
+This is a group project for the 3info from the [INSA-Rennes](http://www.insa-rennes.fr/en.html).
 
 Our goal is to provide a tool chain for the [Orbiter Space Flight Simulator](http://orbit.medphys.ucl.ac.uk/), allowing us to write basic automata without technical knowledge.
 
@@ -9,11 +9,12 @@ Currently, the compiler is made for and support only one ship, the **ShuttleA**.
 
 
 ## TODO (Ordered by importance)
-* More api functions
 * Tool to automagically paste the generated code into the vessel
+* More api functions
 * Compiler errors management
   * Type verification for expression and function call
   * Void does not have returns statements.
+  * No state has been defined.
 * And some warning
   * When two or more state got the START/FINAL token
   * Trying to gotogoto when in the FINAL state.
@@ -30,7 +31,7 @@ Currently, the compiler is made for and support only one ship, the **ShuttleA**.
 
 ## Grammar
 TODO
-See the example.mw
+See the [example.mw](grammar/test/example.mw)
 
 
 
@@ -40,7 +41,7 @@ See the example.mw
 * [Jdk](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (7 or later)
 * [Javacc 5.0](https://java.net/projects/javacc/downloads)
 * [Ant](https://ant.apache.org/manual/index.html)
-  * [Ant plug-in for doxygen](http://ant-doxygen.blogspot.fr/)
+  * [Ant plug-in for doxygen](http://ant-doxygen.blogspot.fr/) (only required if you want to generate the documentation with ant).
 * [Python 3](https://www.python.org/downloads/) or later
 
 ### Orbiter compilation

@@ -33,6 +33,8 @@ public class ErrorMessenger{
 		this.addError(6, "Too much destination", "The getter does not need that much destinations.");
 		this.addError(7, "Too much arguments", "The getter does not need that much arguments.");
 		this.addError(8, "Unknown getter", "The getter does not exist.");
+		this.addError(9, "Not enough destination", "The getter need more destinations.");
+		this.addError(10, "Not enough arguments", "The getter need more arguments.");
 	}
 	
 	private void addError(int id, String t, String m){

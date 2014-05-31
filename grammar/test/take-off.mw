@@ -32,7 +32,7 @@ STATE_1{
 	}
 	
 	IF(alti_start > 100){
-	GOTOGOTO STATE_2;
+		GOTOGOTO STATE_2;
 	}
 }
 

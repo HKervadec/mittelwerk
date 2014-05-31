@@ -35,7 +35,7 @@ public class ApiGet{
 	/**
 	 *  @brief Empty the destList and the argList
 	 *  
-	 *  @details In fact, just recreate them. 
+	 *  @details In facts, it just recreate them. 
 	 *  
 	 *  I'M A JAVA PROGRAMMER AND I DON'T KNOW WHAT I'M DOING
 	 */
@@ -117,15 +117,43 @@ public class ApiGet{
 		}
 	}
 	
-	private void getAltitude(){
-		/* oapiGetAltitude(GetHandle(), &current_altitude) */
-		if(destList.size() > 1){
+	/**
+	 *  @brief A function who check the size of both destinations and arguments
+	 *  and print errors if needed.
+	 *  
+	 *  @param [in] destGoal The expected size of the destinations
+	 *  @param [in] argGoal  The expected size of the arguments
+	 *  
+	 *  @details It will compare the size of the destList to the goal provided,
+	 *  and will print error (with the ErrorManager) if it differ from it.
+	 *  Same with argList.	 
+	 */
+	private void checkSizes(int destGoal, int argGoal){
+		int destSize = this.destList.size();
+		
+		if(destSize > destGoal){
 			Mittelwerk.err_m.printError(6, this.getter);
+		}else if(destSize < destGoal){
+			Mittelwerk.err_m.printError(9, this.getter);		
 		}
 		
-		if(argList.size() > 0){
+		
+		int argSize = this.argList.size();
+		
+		if(argSize > argGoal){
 			Mittelwerk.err_m.printError(7, this.getter);
+		}else if(argGoal < argSize){
+			Mittelwerk.err_m.printError(10, this.getter);		
 		}
+	}
+	
+	
+	/**
+	 *  @brief Generate the code to get the vessel altitude.
+	 */
+	private void getAltitude(){
+		/* oapiGetAltitude(GetHandle(), &current_altitude) */
+		this.checkSizes(1, 0);
 	
 		String result = this.getter;
 		
@@ -140,15 +168,12 @@ public class ApiGet{
 		Mittelwerk.e.add(new I_Simple(result));
 	}
 	
+	/**
+	 *  @brief Generate the code to get the level of a thruster.
+	 */
 	private void getThrusterLevel(){
 		/* tl0 = GetThrusterLevel(th_hover[0]); */
-		if(destList.size() > 1){
-			Mittelwerk.err_m.printError(6, this.getter);
-		}
-	
-		if(argList.size() > 1){
-			Mittelwerk.err_m.printError(7, this.getter);
-		}
+		this.checkSizes(1, 1);
 		
 		String result = this.destList.get(0);
 		result += " = ";
@@ -164,18 +189,15 @@ public class ApiGet{
 		Mittelwerk.e.add(new I_Simple(result));
 	}
 	
+	/**
+	 *  @brief Generate the code to get the vessel speed.
+	 */
 	private void getSpeed(){
 		/* oapiGetShipAirspeedVector(GetHandle(), &tmp_vector);
 		double x = tmp_vector.x;
 		double y = tmp_vector.y;
 		double z = tmp_vector.z; */
-		if(destList.size() > 3){
-			Mittelwerk.err_m.printError(6, this.getter);
-		}
-	
-		if(argList.size() > 0){
-			Mittelwerk.err_m.printError(7, this.getter);
-		}
+		this.checkSizes(3, 0);
 		
 		String result = this.getter;
 		result += "(GetHandle(), &tmp_vector);\n";
@@ -190,31 +212,4 @@ public class ApiGet{
 		result = String.format("%s = tmp_vector.z;\n", this.destList.get(2));
 		Mittelwerk.e.add(new I_Simple(result));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
