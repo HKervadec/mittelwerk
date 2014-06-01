@@ -1,0 +1,77 @@
+ShuttleA
+
+main0 : th_main[0]
+main1 : th_main[1]
+hover0 : th_hover[0]
+hover1 : th_hover[1]
+pod0 : th_pod[0]
+pod1 : th_pod[1]
+
+
+STATE_1{
+	START
+	
+	IF(t > 1){
+		SET_POD_ANGLE(1, PI/2);
+		SET_POD_ANGLE(2, PI/2);
+		SET_LVL(pod0, 1);
+		SET_LVL(pod1, 1);
+		GOTOGOTO STATE_2;
+	}
+	
+}
+
+STATE_2{
+	
+	DOUBLE alti;
+	
+	API_GET{
+		alti = GET_ALTITUDE();
+	}
+	
+	
+	IF(alti > 250){
+		SET_LVL(pod0, 0);
+		SET_LVL(pod1, 0);
+		GOTOGOTO STATE_3;
+	}
+	
+}
+
+STATE_3{
+	
+	DOUBLE alti;
+	DOUBLE a,b,c;
+	
+	API_GET{
+		alti = GET_ALTITUDE();
+		a, b, c = GET_SPEED();
+	}
+	
+	
+	IF(alti > 400 || c > 0){
+		SET_LVL(pod0, 0);
+		SET_LVL(pod1, 0);
+		GOTOGOTO STATE_4;
+	}
+	
+}
+
+STATE_4{
+
+	DOUBLE alti;
+	DOUBLE a,b,c;
+	
+	API_GET{
+		alti = GET_ALTITUDE();
+		a, b, c = GET_SPEED();
+	}
+	
+	IF(c < 0){
+		SET_LVL(pod0, 0.5);
+		SET_LVL(pod1, 0.5);
+		GOTOGOTO STATE_3;
+	}
+	
+
+}
