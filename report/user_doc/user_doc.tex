@@ -118,7 +118,7 @@ Une variable a un nom et un type, il faut donc les déclarer au compilateur avan
 \end{center}
 \textit{\textbf{Attention :} les variables doivent être toutes déclarées au début de la fonction avant d'autres instructions.} 
 
-\newline
+
 \textit{\textbf{Remarques :}} 
 \textit{\begin{itemize}
 	\item les variables peuvent être déclarés en groupe si elles sont du même type : \texttt{DOUBLE a, b, c;}
@@ -188,12 +188,13 @@ Sur les \textsc{double} ou \textsc{int} tous les opérateurs classiques :
 
 \texttt{\textsc{if} (condition) \{Action si condition = TRUE\}}
 
-\texttt{\textsc{else}  \{Action si cond = FALSE\}}
+\texttt{\textsc{else}  \{Action si cond = FALSE\}} \pagebreak
 
 \textit{\textbf{Remarques : }
 \begin{itemize}
 	\item Condtition doit être de type \textsc{bool}.
 	\item Pas de ';' après '\}', if et else ne sont pas des intructions. Par contre à l'intérieur des accolades ce sont des instructions, qui terminent donc par un point-virgule.
+	\item Il est possible de chainer les IF ELSE de la façon suivante : \newline \texttt{IF () \{ \} ELSE IF () \{ \} ELSE}
 \end{itemize}}
 
 \subsubsection{Structure de boucle}
@@ -304,6 +305,7 @@ API\_GET \{ \} est un moyen d'utiliser les fonctions fournies par Orbiter. En ef
             \end{center}
 \end{figure}
 
+\pagebreak
 \section{Exemple récapitulatif}
 
 Voici un exemple d'automate, avec quelques explications.
