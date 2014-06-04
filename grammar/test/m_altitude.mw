@@ -31,8 +31,6 @@ STATE_2{
 	
 	
 	IF(alti > 250){
-		SET_LVL(pod0, 0);
-		SET_LVL(pod1, 0);
 		GOTOGOTO STATE_3;
 	}
 	
@@ -45,13 +43,13 @@ STATE_3{
 	
 	API_GET{
 		alti = GET_ALTITUDE();
-		a, b, c = GET_SPEED();
+		a,b,c = GET_SPEED();
 	}
 	
+	SET_LVL(pod0, 0);
+	SET_LVL(pod1, 0);
 	
-	IF(alti > 400 || c > 0){
-		SET_LVL(pod0, 0);
-		SET_LVL(pod1, 0);
+	IF(alti > 560){
 		GOTOGOTO STATE_4;
 	}
 	
@@ -60,18 +58,50 @@ STATE_3{
 STATE_4{
 
 	DOUBLE alti;
-	DOUBLE a,b,c;
+
+	API_GET{
+		alti = GET_ALTITUDE();
+	}
+	
+	SET_LVL(pod0, 0);
+	SET_LVL(pod1, 0);
+	
+	IF(alti < 550 ){
+		GOTOGOTO STATE_5;
+	}
+
+}
+
+STATE_5{
+
+	DOUBLE alti;
+
+	API_GET{
+		alti = GET_ALTITUDE();
+	}
+	
+	SET_LVL(pod0, 0.2);
+	SET_LVL(pod1, 0.2);
+
+	IF(alti < 500){
+		
+		GOTOGOTO STATE_6;
+	}
+
+}
+
+STATE_6{
+	DOUBLE alti;
 	
 	API_GET{
 		alti = GET_ALTITUDE();
-		a, b, c = GET_SPEED();
 	}
 	
-	IF(c < 0){
-		SET_LVL(pod0, 0.5);
-		SET_LVL(pod1, 0.5);
-		GOTOGOTO STATE_3;
-	}
+	SET_LVL(pod0, 0.7);
+	SET_LVL(pod1, 0.7);
 	
+	IF(alti > 500){
+		GOTOGOTO STATE_5;
+	}
 
 }

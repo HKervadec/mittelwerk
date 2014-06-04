@@ -142,13 +142,15 @@ public:
 private:
 	/* OTTO */
 
-	void maintainAltitude(double goal);
-	void test();
-	void STATE_TOTO(double simt, double simdt, double mjd);
-	void STATE_1(double simt, double simdt, double mjd);
 	int m_state = 0;
-	void postStep(double simt, double simdt, double mjd);
 	VECTOR3 tmp_vector;
+	void postStep(double simt, double simdt, double mjd);
+	void STATE_1(double simt, double simdt, double mjd);
+	void STATE_2(double simt, double simdt, double mjd);
+	void STATE_3(double simt, double simdt, double mjd);
+	void STATE_4(double simt, double simdt, double mjd);
+	void STATE_5(double simt, double simdt, double mjd);
+	void STATE_6(double simt, double simdt, double mjd);
 
 	/* END_OTTO */
 

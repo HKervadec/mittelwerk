@@ -26,7 +26,7 @@ STATE_1{
 		SET_LVL(hover0, 1);
 		SET_LVL(hover1, 1);
 		SET_POD_ANGLE(1, PI/2);
-		SET_POD_ANGLE(3, PI/2);
+		SET_POD_ANGLE(2, PI/2);
 		SET_LVL(pod0, 1);
 		SET_LVL(pod1, 1);
 	}
