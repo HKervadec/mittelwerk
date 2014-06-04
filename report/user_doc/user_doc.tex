@@ -116,14 +116,22 @@ Une variable a un nom et un type, il faut donc les déclarer au compilateur avan
 \begin{center}
 \texttt{type nom;}
 \end{center}
-\textit{\textbf{Attention :} les variables doivent être toutes déclarées au début de la fonction avant d'autres instructions. } 
+\textit{\textbf{Attention :} les variables doivent être toutes déclarées au début de la fonction avant d'autres instructions.} 
+
+\newline
+\textit{\textbf{Remarques :}} 
+\textit{\begin{itemize}
+	\item les variables peuvent être déclarés en groupe si elles sont du même type : \texttt{DOUBLE a, b, c;}
+	\item Des valeurs t, dt et mjd sont accessibles. t correspond au temps écoulé pendant la simulation en secondes, dt est l'intervalle de temps entre deux calculs de simulation : dt est donc le pas de la simulation. Enfin mjd correspond à t mais exprimée dans le calendrier Julien, permettant si la simulation dure très longtemps (aller-retour sur mars) d'exprimer la valeur autrement qu'en secondes !
+\end{itemize}}
+ 
+
 
 Par exemple, si vous souhaitez définir un double (nombre à virgule à valeur max très élevée) que vous appelez toto, il faudra l'avoir défini avant de l'utiliser : 
 \begin{center}
 \texttt{DOUBLE toto;}
 \end{center}
-\textit{\textbf{Attention : }n'utilisez pas de caractères spéciaux, ni accentués, ni espaces dans les noms de fonctions et variables.
-}
+\textit{\textbf{Attention : }n'utilisez pas de caractères spéciaux, ni accentués, ni espaces dans les noms de fonctions et variables. Ne nommez pas non plus vos variables t, dt ou mjd.}
 
 Pour affecter une valeur, la démarche est identique à la plupart des langages :
 \begin{center}
@@ -134,6 +142,7 @@ Pour affecter une valeur, la démarche est identique à la plupart des langages 
 	\texttt{toto = max(1, toto);}
 \end{center}
 On peut affecter à une variable la valeur de retour d'une fonction, d'une autre variable ... Il faut juste vérifier que le type que l'on donne à la variable correspond à celui qu'on lui a donné lors de sa déclaration.
+Les types disponibles sont BOOL (TRUE ou FALSE), INT, DOUBLE.
 
 \subsubsection{Fonctions}
 Les fonctions peuvent être déclarées, hors du corps d'une fonction, et être appelées, dans le corps d'une fonction ou dans un etat de l'Automate.
@@ -181,22 +190,22 @@ Sur les \textsc{double} ou \textsc{int} tous les opérateurs classiques :
 
 \texttt{\textsc{else}  \{Action si cond = FALSE\}}
 
-Remarques : 
+\textit{\textbf{Remarques : }
 \begin{itemize}
 	\item Condtition doit être de type \textsc{bool}.
 	\item Pas de ';' après '\}', if et else ne sont pas des intructions. Par contre à l'intérieur des accolades ce sont des instructions, qui terminent donc par un point-virgule.
-\end{itemize}
+\end{itemize}}
 
 \subsubsection{Structure de boucle}
 L'implémentation du tantque passe par while dans notre programme. Tantque (condition est vraie) \{ action tant que cond est vraie\} se traduit en :
 
 \texttt{\textsc{while} (condition) \{ instructions \} }
 
-Remarques : 
+\textit{\textbf{Remarques : }
 \begin{itemize}
 	\item Condtition doit être de type \textsc{bool}.
 	\item Pas de ';' après '\}', while n'est pas une intruction. Par contre à l'intérieur des accolades ce sont des instructions, qui terminent donc par un point-virgule.
-\end{itemize}
+\end{itemize}}
 
 \subsubsection{Exemple de synthèse:}
 
@@ -234,8 +243,8 @@ Ensuite le langage permet de définir des alias sur des objets de chaque vaissea
 
 Ce n'est pas une instruction, cela ne nécessite pas de ';'. de plus cela ne fait pas partie d'un corps de fonction ou d'un état.
 
-\textbf{Remarque : }Dans le cadre du ShuttleA, th\_main\[0\] corresponds au réacteur principal gauche. 
-Les hover sont des propulseurs verticaux (avant et arrière du vaisseaux) qui provoquent une poussée ascendante. Enfin, les pods sont de tout petits propulseurs, aussi appelés boosters. Ils peuvent s'incliner de -90° à +90°.
+\textit{\textbf{Remarque : }Dans le cadre du ShuttleA, th\_main[0] corresponds au réacteur principal gauche. 
+Les hover sont des propulseurs verticaux (avant et arrière du vaisseaux) qui provoquent une poussée ascendante. Enfin, les pods sont de tout petits propulseurs, aussi appelés boosters. Ils peuvent s'incliner de -90° à +90°.}
 
 \subsection{Définition de fonctions}
 Pour s'aider, on peut définir des fonctions que l'on utilisera dans les états de l'automate. Cette étape est déjà détaillée : voir Langage Mittelwerk > Fonctions.
@@ -250,6 +259,8 @@ On définit un état par son nom et par son corps, comme ceci :
 \texttt{STATE\_NOM1 \{
 	/* Corps de l'automate ici */
 \}}
+
+\textbf{Remarque :} Le STATE\_ n'est pas un mot-clé : vouys pouvez nommer l'étape comme vous voulez, du moment que le nom ne soit composé que par des nombres, des lettres majuscules non accentuées et des underscore (\_).
 
 \subsubsection{Transitions}
 Pour les transitions, l'utilisateur dispose du mot-clé GOTOGOTO, pour passer à un autre état. L'appel de GOTOGOTO est une instruction, il faut donc un ';' à la fin. 
@@ -281,10 +292,47 @@ Dans cet exemple, l'état A passera toujours à l'état B.
 Il faut bien que votre système ait un état au départ. Il faut donc qu'exactement un automate soit initial, doté du mot-clé START. Ce mot-clé doit être la première chose renseignée dans l'état.  
 Généralement c'est le premier état défini, mais ce n'est pas obligatoire. Dans un soucis de clarté cependant, nous vous conseillons de toujours le laisser en premier.
 
+Un état peut-être FINAL, c'est un automate sans transitions (GOTOGOTO interdits). FINAL s'utilise comme START, mais il peut n'y avoir aucun état FINAL, et il peut y en avoir plusieurs.
+
+\subsection{API\_GET}
+
+API\_GET \{ \} est un moyen d'utiliser les fonctions fournies par Orbiter. En effet, certaines de ces fonctions renvoient des valeurs non utilisables dans notre langage, pour des soucis de simplification (pointeurs, vecteurs ...). On récupère donc les valeurs de retours de ces fonctions grâce à API\_GET :
+
+\begin{figure}[!h]
+            \begin{center}
+                \includegraphics[width=0.7\textwidth]{img/apiget.png}
+            \end{center}
+\end{figure}
+
+\section{Exemple récapitulatif}
+
+Voici un exemple d'automate, avec quelques explications.
+\begin{center}
+	\includegraphics[scale=0.75]{img/otto1.png}
+\end{center}
+
+Comme prévu, l'initialisation de l'automate des lignes 1 à 8. Ensuite on définit une fonction VOID (qui ne renvoie pas de valeur) takeOff() qui oriente les boosters et met tous les systèmes de propulsion à 100\% de leur capacité (sauf les réacteurs principaux, à poussée horizontale). 
+
+
+\begin{center}
+	\includegraphics[scale=0.75]{img/otto2.png}
+\end{center}
+doubleMain() double la puissance délivrée par les réacteurs principaux, si ils sont à moins de 50\%, les met à 100\% sinon. Elle renvoie faux si le pourcentage de puissance n'a pas pu être doublée : c'est à dire si les réacteurs étaient déjà à plus de 50\% de leur capacité maximale. C'est une fonction illustrative, elle n'est d'ailleurs même pas utilisée.
+
+Ensuite on définit l'état 1 comme état initial : \texttt{STATE\_1 \{ START [...] \} }
+On définit des variables, et on leur donne des valeurs grâces aux fonctions de l'API.
+
+\begin{center}
+	\includegraphics[scale=0.75]{img/otto3.png}
+\end{center}
+
+Dans le deuxième état on active les réacteurs principaux à 100\% de leur capacité.
+Lorsque l'on atteint 1500m d'altitude, on passe à l'état 3. Celui ci coupe les booster.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Compilation}
 
-Voici un récapitulatif des étapes et instructions nécessaires pour rendre votre automate pleinement fonctionnel.
+Voici un récapitulatif des étapes et instructions nécessaires pour rendre votre automate pleinement fonctionnel. Cette partie s'adresse aux utilisateurs qui n'utilisent pas le script python pour tout compiler automatiquement.
 
 \subsection{Compiler le compilateur}
 \onehalfspacing 
