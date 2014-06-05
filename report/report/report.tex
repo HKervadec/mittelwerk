@@ -52,11 +52,7 @@
         Ce domaine peut être utilisée de différentes manières : amener le système d'un état initial à un état final (l'objectif) ou assurer que le système ne se retrouve pas en mauvaise configuration...
 
     \subsection{Orbiter}
-<<<<<<< HEAD
         Orbiter\footnote{\url{http://orbit.medphys.ucl.ac.uk/}} est un simulateur de vols spatiaux, développé par le Dr Martin \textsc{Schweiger}, qui était parti du constat que la simulation spatiale manquait cruellement d'un simulateur respectant les lois de la physique.
-=======
-        Orbiter\footnote{\url{http://orbit.medphys.ucl.ac.uk/}} est un simulateur de vols spatiaux, développé par Dr Martin SCHWEIGER, qui était parti du constat que la simulation spatiale manquait cruellement d'un simulateur respectant les lois de la physique.
->>>>>>> 447a0a4bf6d3335342ebd91ab2b01ea02587f4f8
 
         \begin{figure}[!h]
             \begin{center}
@@ -66,21 +62,12 @@
 
         La première version fut publiée le 27 novembre 2000, et la dernière version stable en date est la version 2010.
 
-<<<<<<< HEAD
-        Malgré le succès rencontré par le simulateur et les nombreuses demandes d'ouverture du code\footnote{D'un point de vue open source}, l4quteur a toujours refusé de le faire, et a préféré à la place publier une API, afin tout de laisser la possibilité aux utilisateurs d'orbiter de développer ses propres modules, vaisseaux, etc.
+        Malgré le succès rencontré par le simulateur et les nombreuses demandes d'ouverture du code\footnote{D'un point de vue open source.}, l'auteur a toujours refusé de le faire, et a préféré à la place publier une API, afin de laisser la possibilité aux utilisateurs d'orbiter de développer leurs propres modules, vaisseaux, etc.
 
         Orbiter possède de base de nombreux vaisseaux, et un grand nombre de missions différentes, allant des missions historiques, aux plus futuristes. Cette grande variété en fait un outil idéal pour apprendre des concepts de la physique en s'amusant, et peut être une excellence base pour servir de démonstrateur.
 
     \subsection{La théorie du contrôle}
         La théorie du contrôle recoupe l'ensemble des disciplines qui consistent à asservir un système, et à lui permettre de s'auto-gérer: c'est la base du pilotage automatique.
-=======
-        Malgré le succès rencontré par le simulateur et les nombreuses demandes d'ouverture du code\footnote{D'un point de vue open source}, l'auteur a toujours refusé de le faire, et a préféré à la place publier une API, afin tout de laisser la possibilité aux utilisateurs d'orbiter de développer ses propres modules, vaisseaux, etc.
-
-        Orbiter possède de base de nombreux vaisseaux, et un grand nombre de missions différentes, allant des missions historiques, aux plus futuristes. Cette grande variété en fait un outil idéal pour apprendre des concepts de la physique en s'amusant, et peut être une excellence base pour servir de démonstrateur.
-
-    \subsection{La Théorie du contrôle}
-        La Théorie du contrôle recoupe l'ensemble des disciplines qui consistent à asservir un système, et à lui permettre de s'auto-gérer: c'est la base du pilotage automatique.
->>>>>>> 447a0a4bf6d3335342ebd91ab2b01ea02587f4f8
 
         Un des principe les plus simples est la boucle de contrôle: en se basant sur plusieurs variables (par exemple: la puissance d'un réacteur, vitesse, altitude, ...), et en les comparants à des objectifs, nous pouvons adapter cette puissance afin de minimiser l'écart entre l'objectif et l'état courant du système.
 
@@ -93,30 +80,22 @@
         
         Afin d'asservir le système, il est possible d'utiliser des automates, qui se chargeront de lire son état et d'opérer les commandes nécessaires pour se rapprocher du résultat souhaité.
 
-<<<<<<< HEAD
         Parti du constat que Orbiter est un outil ludique et visuel, il a été proposé dans cette étude de créer une chaîne d'outils permettant d'automatiser facilement des vaisseaux d'Orbiter à l'aide de boucles de contrôles, évitant ainsi d'éditer leur code souvent complexe.
-=======
-        Parti du constat que Orbiter est un outil ludique et visuel, il a été proposé, dans cette étude, de créer une chaîne d'outils permettant d'automatiser facilement des vaisseaux d'Orbiter à l'aide de boucles de contrôles, car, de base, nous pouvons juste contrôler le vaisseau au clavier.
->>>>>>> 447a0a4bf6d3335342ebd91ab2b01ea02587f4f8
 
     \subsection{Objectifs initiaux}
         Pour automatiser les vaisseaux, nous avons été chargé de créer un nouveau langage, à la grammaire épurée, contenant des fonctions de base, et pouvant ainsi servir facilement de démonstrateur pour la théorie du contrôle.
 
         Le résultat pourrait servir dans des conférences ou des événements de vulgarisation scientifique, pour montrer facilement (et visuellement) les différentes manières d'aborder l'asservissement d'un vaisseaux.
 
-        Le langage devait donc être très simple, et la chaîne logicielle la plus simple possible à utiliser, pouvant permettre à quiconque de créer ses propres automates.
+        Le langage devait donc être très simple, et la chaîne logicielle la plus facile d'utilisation, pouvant permettre à quiconque de créer ses propres automates.
 
-        Par ailleurs, le travail devait être réutilisable, pour pouvoir être repris les années suivantes, et ainsi améliorer petit à petit ce compilateur.
+        Par ailleurs, le travail devait être réutilisable, pour pouvoir être repris les années suivantes, et ainsi améliorer petit à petit cette chaîne d'outils.
 
 \section{Réalisation pratique}
     \subsection{Architecture d'Orbiter}
         L'architecture du simulateur est propice à l'ajout de nouveaux modules: par exemple, tout les vaisseaux sont fournis sous forme de .dll. Ainsi, pour peu que l'on ai réussi à écrire et à compiler un nouveau module, il suffit de le copier dans le dossier adéquat pour être utilisable par Orbiter.
         
-<<<<<<< HEAD
         Un vaisseau est donc écrit en C++, puis compilé vers une dll (par exemple, ShuttleA.dll). Ce code contient les fonctions régissant le comportement du vaisseau, ses spécificités ainsi que l'action des commandes manuelles\footnote{Orbiter s'utilisant au clavier et à la souris.} sur celui ci.
-=======
-        Un vaisseau est donc écrit en C++, puis compilé vers une dll (par exemple, ShuttleA.dll). Ce code contient les fonctions régissant le comportement du vaisseau, ses spécificités ainsi que l'action des commandes manuelles\footnote{Orbiter s'utilisant au clavier et à la souris, le "`joueur"' étant le pilote.} sur celui ci.
->>>>>>> 447a0a4bf6d3335342ebd91ab2b01ea02587f4f8
         
         On peut donc rajouter du code pour que le vaisseau se gère tout seul, créant ainsi notre automate, sans toucher à Orbiter en lui même. C'est cette création que nous allons dès à présent détailler.
 
@@ -125,11 +104,6 @@
         
         Ce choix est lié au fait que le ShuttleA est composé d'une seule classe C++, ce qui nous permet une prise en main plus rapide et une intégration plus simple de notre automate. 
         
-<<<<<<< HEAD
-=======
-        Une amélioration du projet pourrait être de supporter un plus grand nombre de vaisseaux (voire tous?) une fois que le langage est jugé suffisamment mature.
-
->>>>>>> 447a0a4bf6d3335342ebd91ab2b01ea02587f4f8
         \begin{figure}[!h]
             \begin{center}
                 \includegraphics[width=0.5\textwidth]{img/shuttleA.png}
@@ -137,12 +111,12 @@
             \end{center}
         \end{figure}
         
-        Une amélioration du projet pourrait être de supporter un plus grand nombre de vaisseaux (voire tous?) une fois que le langage est jugé suffisamment mature.
+        Une amélioration du projet pourrait être de supporter un plus grand nombre de vaisseaux (voire tous?) une fois que le langage sera jugé suffisamment mature.
 
 
 
     \subsubsection{Recompilation des vaisseaux existants}
-        Nous avons utilisé Orbiter 2010 et son SDK\footnote{Software Development Kit}, afin de pouvoir dans un premier temps recompiler les vaisseaux du simulateur, sans les altérer.
+        Nous avons utilisé Orbiter 2010 et son SDK\footnote{Software Development Kit.}, afin de pouvoir dans un premier temps recompiler les vaisseaux du simulateur, sans les altérer.
 
         Nous avons dû utiliser Visual Studio\footnote{Nous avons personellement utilisé la version 2013, mais cette étape peut se faire aussi avec les versions gratuites de Visual.}, puisque le code des vaisseaux est livré sous forme de projet Visual Studio. 
         
@@ -160,11 +134,13 @@
 
         Après quelques essais, nous avons trouvé un modèle qui pourrait être généré facilement par un compilateur, tout en limitant la modification initiale du vaisseau.
         
-        Chaque vaisseau possède une fonction (utilisée ou non), ayant pour entête \texttt{void clbkPostStep (double simt, double simdt, double mjd)}. 
         
-        Elle est appelée à chaque fin d'étape de la simulation\footnote{Le temps ne pouvant pas être géré de manière continue, il est donc subdivisé par le simulateur.}, et ses arguments correspondent respectivement au temps de la simulation, au temps écoulé depuis la dernière étape, et le temps de simulation dans le calendrier Julien\footnote{N'étant pas obligé de tout laisser à temps réel, on peut accélérer la simulation, et ainsi faire des missions beaucoup plus longues, comme envoyer un vaisseau sur Mars!}.
+    \subsubsection{Adaptation d'un vaisseau}
+        En effet, chaque vaisseau possède une fonction (définie dans l'API, mais pas nécessairement utilisée par le vaisseau), ayant pour entête \texttt{void clbkPostStep (double simt, double simdt, double mjd)}. 
         
-        Nous nous en servons donc pour appeler la fonction \og mère\fg{} de notre automate. Ainsi, il suffit d'ajouter la ligne \texttt{postStep(simt, simdt, mjd);} une fois pour que le vaisseau puisse supporter l'utilisation d'un automate, pour peu que le header (fichier .h) contienne les prototypes de l'automate.
+        Celle ci est appelée à chaque fin d'étape de la simulation\footnote{Le temps ne pouvant pas être géré de manière continue, il est donc subdivisé en étapes par le simulateur.}, et ses arguments correspondent respectivement au temps de la simulation, au temps écoulé depuis la dernière étape, et le temps de simulation dans le calendrier Julien\footnote{Le temps ne s'écoulant pas obligatoirement en temps réel, nous pouvons accélérer la simulation, et ainsi faire des missions beaucoup plus longues, comme envoyer un vaisseau sur Mars!}.
+        
+        Nous nous en servons donc pour appeler la fonction \og mère\fg{} de notre automate, qui s'executera donc une fois par étape. Ainsi, il suffit d'ajouter la ligne \texttt{postStep(simt, simdt, mjd);}\footnote{Qui correspond à l'appel de la dite fonction \og mère\fg{}.} pour que le vaisseau puisse supporter l'utilisation d'un automate, pour peu que le header (fichier .h) contienne les prototypes de l'automate\footnote{Nous expliquons dans la section \ref{header_tag} deux méthodes différentes pour atteindre cet objectif.}.
 
         \begin{figure}[!h]
             \begin{center}
@@ -177,31 +153,31 @@
     \subsubsection{Javacc}
         Ayant réalisé en parallèle de l'étude pratique un projet compilateur, il nous a semblé naturel de réutiliser les mêmes outils, à savoir Javacc. Ceci nous a permis de gagner un temps précieux sur la prise en main de l'outil principal de développement.
 
-        Javacc est un compilateur de compilateur, permettant de facilement créer un analyseur syntaxique, et de construire à partir de lui un analyseur sémantique et bien entendu, notre compilateur.
+        Javacc est un compilateur de compilateur, permettant de créer facilement un analyseur syntaxique, et de construire à partir de celui ci notre compilateur.
         
         La grammaire est définie dans un fichier \verb|.jj|\footnote{On y met aussi les appels vers les fonctions appropriées du compilateur au fur et à mesure que l'analyse syntaxique avance.}, puis Javacc se charge de générer du Java à partir de celui ci.
         
         \begin{figure}[!h]
             \begin{center}
                 \includegraphics{img/grammar_jj.png}
-                \caption{Début de notre grammaire du .jj.}
+                \caption{Début de notre grammaire du .jj. On peut voir ligne 194 comment y insérer un appel vers une fonction du compilateur.}
             \end{center}
         \end{figure}
         
-        Il suffit ensuite de recompiler tout simplement le code généré avec le reste du compilateur, lui déjà écrit en Java.
+        Il suffit ensuite de recompiler le code généré avec le reste du compilateur (qui lui est écrit en Java).
 
     \subsubsection{Le langage}
-        L'objectif était de garder un langage simple, avec des fonctionnalités limitées: pas de tableaux, pointeurs, et autres.
+        L'objectif était de garder un langage simple, avec des fonctionnalités limitées: pas de tableaux, pointeurs, et autres notions plus \og complexes \fg{}\footnote{Rappelons que l'objectif est d'avoir un langage vraiment simple à prendre en main, même pour une personne n'ayant programmé.}.
 
-        Même si ce choix peut paraître étrange, on peut argumenter que complexifier le langage lui ferait perdre son intérêt\footnote{Rappelons qu'il s'agit d'un langage de démonstration, qui doit pouvoir être pris en main par des personnes n'ayant jamais programmé ou presque.}, puisqu'il suffirait d'apprendre directement le C++ et ne plus être limité par notre langage pour réaliser des controleurs plus complexes.
+        Même si ce choix peut paraître étrange, on peut argumenter que complexifier le langage lui ferait perdre son intérêt, puisqu'il suffirait d'apprendre directement le C++ et ne plus être limité par notre langage pour réaliser des controleurs plus complexes.
         
-        Ci-dessous la grammaire presque complète (certaines parties étant suffisamment explicites, nous ne les détailleront pas).
+        Ci-dessous la grammaire presque complète\footnote{Par manque de place, nous ne détaillerons pas certaines parties jugées suffisamment explicites pour ne pas perturber la bonne compréhension de cette grammaire.}.
 
         \begin{Verbatim}[frame=single]
 Automata = VesselName()
            ThrusterDeclaration()*
-           FunctionDeclaration()~
-           StateDeclaration()~
+           FunctionDeclaration()
+           StateDeclaration()
            EOF
 VesselName = <ident>
 ThrusterDeclaration = <ident> ":" <ident>
@@ -219,7 +195,7 @@ Instruction = DeclVar()
               | Return()
               | Gotogoto() 
               | ApiGet() 
-Gotogoto() = "GOTOGOTO" <ident>
+Gotogoto() = "GOTOGOTO" <ident> ";"
 ApiGet= "API\_GET" "{" 
             Getter()*
         "}"
@@ -227,11 +203,11 @@ Getter =  Dests() "=" <ident> "(" Args() ")" ";"
 Dests =  <ident> (( "," <ident>)*)?
         \end{Verbatim}
 
-        Cette grammaire a été réduite au maximum (on aurait pu par exemple interdire les return directement dans la grammaire), et ne suffit pas à interdire tout les abus de l'utilisateur. Ce travail est laissé à l'analyseur sémantique, qui s'assure de la cohérence et la validité des opérations demandées.
+        Cette grammaire a été réduite au maximum , et ne suffit pas à interdire tout les abus de l'utilisateur. Ce travail est laissé à l'analyseur sémantique, qui s'assure de la cohérence et la validité des opérations demandées.
         
-        On peut remarquer l'étrangeté d'ApiGet. Il s'agit d'une conséquence d'un choix technique, qui visait à rendre la récupération des informations sur le vaisseaux simple. 
+        \paragraph{On peut remarquer l'étrangeté d'\texttt{ApiGet}.} Il s'agit d'une conséquence d'un choix technique, qui visait à rendre la récupération des informations sur le vaisseaux simple. 
         
-        Par exemple, lorsque l'on récupère la vitesse du vaisseaux, on va récupérer au total 3 doubles: la vitesse en \verb|x|, \verb|y|, et \verb|z|. Nous avons donc voulu obtenir une syntaxe de la forme \verb| x,y,z = GET_SPEED(); |, ce qui entrait en conflit avec les affectations habituelles\footnote{Une amélioration possible (mais difficile techniquement à mettre en place) pourrait être la généralisation du renvois multiple, par exemple avec la création d'un type n-uplet.}.
+        Par exemple, lorsque l'on récupère la vitesse du vaisseaux, on va récupérer au total 3 doubles: la vitesse en \verb|x|, \verb|y|, et \verb|z|. Nous avons donc voulu obtenir une syntaxe de la forme \verb| x,y,z = GET_SPEED(); |, ce qui entrait en conflit avec les affectations habituelles\footnote{Une amélioration possible (mais difficile techniquement à mettre en place) pourrait être la généralisation du renvois multiple, par exemple avec la création d'un type n-uplet.}. De plus, ces fonctions doivent être géré au cas par cas, et leur syntaxe ne traduit absoluement pas leur fonctionnement réel, ce qui aurait considérablement nuit à l'architecture du compilateur.
         
         \subsubsection{Compilation de l'automate}
             Après avoir écrit l'automate dans un fichier \texttt{.mw}, nous pouvons donc le compiler.
@@ -243,10 +219,11 @@ Dests =  <ident> (( "," <ident>)*)?
                 \item le fichier \verb|.h| de sortie (optionnel, \texttt{header.h} par defaut)
             \end{itemize}
             
-            Alors que \texttt{Automata.cpp} sera à intégrer tel quel dans le projet, \texttt{header.h} contient le code qui doit être copié dans le \texttt{ShuttleA.h}, et ne doit pas (et ne peut pas) être utilisé en l'état.
+            Alors que \texttt{Automata.cpp} sera à intégrer tel quel dans le projet, \texttt{header.h} contient le code qui doit être copié dans le \texttt{ShuttleA.h}, et ne peut pas être utilisé en l'état.
 
         \subsubsection{Recompilation du vaisseau}
-            Le code généré, nous pouvons maintenant recompiler le vaisseau, afin de tester l'efficacité de l'automate.
+            \label{header_tag}
+            Le code généré, nous pouvons maintenant recompiler le vaisseau, afin de tester les performances de notre l'automate.
             
             Il faut donc rajouter au projet VisualStudio le fichier contenant le code (\texttt{Automata.cpp}), et coller les entêtes des fonctions dans son header.
             
@@ -271,7 +248,7 @@ Dests =  <ident> (( "," <ident>)*)?
             
         \paragraph{(Ré)écrire l'automate} en utilisant la grammaire définie.
         
-        \paragraph{Compiler cet automate} et coller le résultat dans le vaisseau adapté
+        \paragraph{Compiler cet automate} et coller le résultat dans le vaisseau précédemment adapté.
         
         \paragraph{Recompiler le vaisseau}
             
@@ -288,19 +265,19 @@ Dests =  <ident> (( "," <ident>)*)?
             \item La suppression de la dépendance à Visual Studio, pour avoir une chaîne logicielle complète.
             \item Avoir un plus grand nombre de vérifications lors de la compilation de l'automate. Dans l'absolu, si le compilateur C++ produit une erreur (ou un warning), notre compilateur devra avoir affiché une erreur/warning en premier lieu.
             \item Généraliser l'utilisation des n-uplets\footnote{Qui pour l'instant sont une fonctionnalité plus exotique, réservée aux API\_GET}, ce qui permettrait par exemple d'avoir le retour de multiples valeurs pour une fonction.
-            \item \og Couper \fg{} l'automate quand l'utilisateur reprend le contrôle manuel du vaisseau.
-            \item Supporter un plus grand nombre de vaisseaux, en retravaillant un peu la grammaire et l'intégration du code.
+            \item \og Couper \fg{} l'automate quand l'utilisateur reprend le contrôle manuel du vaisseau, pour potentiellement le relancer plus tard.
+            \item Supporter un plus grand nombre de vaisseaux, en retravaillantoa grammaire pour pouvoir aussi utiliser des fonctions spécifiques aux vaisseau asservi.
             \item \'Ecrire de nouveaux automates pour les démonstrations lors d'expositions ou de conférences .
-            \item Ajouter une GUI permettant de choisir son vaisseau et son automate.
+            \item Créer une IHM permettant de choisir son vaisseau et son automate.
         \end{itemize}
 
 \section{Conclusion}
-    Bien que les principaux objectifs aient été atteint, des finitions sont toujours possibles, et même souhaitable.
+    Bien que les principaux objectifs aient été atteints, des finitions sont toujours possibles, et même souhaitables.
         
     Travailler sur ce simulateur nous a vraiment plus. Quelle fierté lorsque notre Shuttle A a fini par s'élever tout seul. 
     Ce projet permet de croiser un domaine très théorique (la théorie du contrôle) avec quelque chose de concret (une fusée qui décolle). C'est cela qui rend ce projet valorisant et passionnant.
     
-    Le travail sur celui-ci mérite d'être continué, afin de produire à terme, une véritable vitrine de démonstration pour la théorie du contrôle.
+    Le travail mérite d'être continué, afin de produire à terme une véritable vitrine de démonstration pour la théorie du contrôle.
 
 
 \end{document}
