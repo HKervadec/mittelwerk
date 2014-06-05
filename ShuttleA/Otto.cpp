@@ -3,72 +3,81 @@
 typedef void(ShuttleA:: *StatePt)(double, double, double);
 
 void ShuttleA::postStep(double simt, double simdt, double mjd){
-	StatePt state_fct[] = { &ShuttleA::STATE_TOTO,
-		&ShuttleA::STATE_1 };
+	StatePt state_fct[] = { &ShuttleA::STATE_1, 
+		&ShuttleA::STATE_2,
+		&ShuttleA::STATE_3,
+		&ShuttleA::STATE_4,
+		&ShuttleA::STATE_5,
+		&ShuttleA::STATE_6 };
 	(this->*state_fct[m_state])(simt, simdt, mjd);
 }
 
-void ShuttleA::maintainAltitude(double goal){
-	double tl0, tl1;
-	double current_altitude;
-	double diff;
-	tl0 = GetThrusterLevel(th_hover[0]);
-	tl1 = GetThrusterLevel(th_hover[1]);
-	oapiGetAltitude(GetHandle(), &current_altitude);
-	diff = (current_altitude - goal) / goal;
-	tl0 = max(0, min(0.5, tl0 - diff));
-	tl1 = tl0;
-	SetThrusterLevel(th_hover[0], max(tl0, tl0))
-		;
-	SetThrusterLevel(th_hover[1], tl1)
-		;
-	SetPodAngle(1, PI)
-		;
-}
+	void ShuttleA::STATE_1(double simt, double simdt, double mjd){
+		if( simt > 1  ){
+ 		SetPodAngle ( 1  , PI / 2  ) 		;
+		SetPodAngle ( 2  , PI / 2  ) 		;
+		SetThrusterLevel ( th_pod[0] , 1  ) 		;
+		SetThrusterLevel ( th_pod[1] , 1  ) 		;
+		m_state = 1;
+	} 	
 
-void ShuttleA::test(){
-	double a, b, c;
+	}
+
+	void ShuttleA::STATE_2(double simt, double simdt, double mjd){
+		double alti;
+	oapiGetAltitude(GetHandle(),&alti);
+		if( alti > 250  ){
+ 		m_state = 2;
+	} 	
+
+	}
+
+	void ShuttleA::STATE_3(double simt, double simdt, double mjd){
+		double alti;
+		double a, b, c;
+	oapiGetAltitude(GetHandle(),&alti);
 	oapiGetShipAirspeedVector(GetHandle(), &tmp_vector);
 	a = tmp_vector.x;
 	b = tmp_vector.y;
 	c = tmp_vector.z;
-	if (a < 0){
-		SetThrusterLevel(th_main[0], 1)
-			;
-		SetThrusterLevel(th_main[1], 1)
-			;
-	}
-
-
-}
-
-void ShuttleA::STATE_TOTO(double simt, double simdt, double mjd){
-	double foo;
-	if (simt > 5){
-		SetThrusterLevel(th_hover[0], 1)
-			;
-		SetThrusterLevel(th_hover[1], 1)
-			;
-		if (simt > 10){
-			m_state = 1;
-		}
-
+	SetThrusterLevel ( th_pod[0] , 0  ) 	;
+	SetThrusterLevel ( th_pod[1] , 0  ) 	;
+		if( alti > 560  ){
+ 		m_state = 3;
+	} 	
 
 	}
 
+	void ShuttleA::STATE_4(double simt, double simdt, double mjd){
+		double alti;
+	oapiGetAltitude(GetHandle(),&alti);
+	SetThrusterLevel ( th_pod[0] , 0  ) 	;
+	SetThrusterLevel ( th_pod[1] , 0  ) 	;
+		if( alti < 550  ){
+ 		m_state = 4;
+	} 	
 
-}
+	}
 
-void ShuttleA::STATE_1(double simt, double simdt, double mjd){
+	void ShuttleA::STATE_5(double simt, double simdt, double mjd){
+		double alti;
+	oapiGetAltitude(GetHandle(),&alti);
+	SetThrusterLevel ( th_pod[0] , 0.2  ) 	;
+	SetThrusterLevel ( th_pod[1] , 0.2  ) 	;
+		if( alti < 500  ){
+ 		m_state = 5;
+	} 	
 
-	maintainAltitude(500)
-		;
+	}
 
-	test()
-		;
-	SetThrusterLevel(th_main[0], 1)
-		;
-	SetThrusterLevel(th_main[1], 1)
-		;
-}
+	void ShuttleA::STATE_6(double simt, double simdt, double mjd){
+		double alti;
+	oapiGetAltitude(GetHandle(),&alti);
+	SetThrusterLevel ( th_pod[0] , 0.7  ) 	;
+	SetThrusterLevel ( th_pod[1] , 0.7  ) 	;
+		if( alti > 500  ){
+ 		m_state = 4;
+	} 	
+
+	}
 
