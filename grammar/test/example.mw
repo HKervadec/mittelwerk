@@ -29,26 +29,27 @@ VOID maintainAltitude(DOUBLE goal){
 	SET_POD_ANGLE(1, PI);
 }
 
-VOID test(){
+VOID foo(){
 	DOUBLE a,b,c;
 	
 	API_GET{
 		a, b, c = GET_SPEED();
 	}
 	
-	IF(a < 0){
-		SET_LVL(main0, 1);
-		SET_LVL(main1, 1);
+	IF(c <= 0){
+		SET_LVL(hover0, 1);
+		SET_LVL(hover1, 1);
+	}ELSE IF(TRUE){
+		SET_LVL(hover0, 0);
+		SET_LVL(hover1, 0);
 	}
 }
 
 /* Commentaire de test */
 
 
-STATE_TOTO{
+STATE_BAR{
 	START
-	
-	DOUBLE foo;
 
 	IF(t > 5){
 		SET_LVL(hover0, 1);
@@ -62,9 +63,8 @@ STATE_TOTO{
 
 STATE_1{
 	FINAL
-	
-	maintainAltitude(500);
-	test();
+
+	foo();
 	SET_LVL(main0, 1);
 	SET_LVL(main1, 1);
 }

@@ -451,11 +451,12 @@ void if_(): {}{
 		 t_b.commit();}
 	( <ELSE> {t_b.add("else");} 
 		("{" 
-			{t_b.add("){\n");}
+			{t_b.add("{\n");}
 			{e.incTab();}
 			{t_b.commit();}
-			set_instruction() "}" {t_b.add("}\n");} {e.decTab();} {t_b.commit();}
-			| instruction()))?
+			set_instruction() "}" {t_b.add("}\n");} {e
+			.decTab();} {t_b.commit();}
+			| {t_b.commit();} instruction()))?
 		{e.add(new I_Simple("\n\n"));}
 }
 
